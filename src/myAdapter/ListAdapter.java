@@ -15,12 +15,12 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public int size() {
-        return 0;
+        return this.to - this.from;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return (this.size() == 0);
     }
 
     @Override
@@ -43,13 +43,24 @@ public class ListAdapter implements HList, HCollection{
         return new Object[0];
     }
 
+    /**
+     *
+     * ritorna true se obj viene aggiunto in coda alla lista.
+     * la lista puo' contenere duplicati e non ci sono limitazioni sui tipi (anche il tipo null e' concesso).
+     * questo metodo, quindi, non fallirà mai.
+     */
     @Override
     public boolean add(Object obj) {
-        return false;
+        this.add(this.size(), obj);
+        return true;
     }
 
     @Override
     public boolean remove(Object obj) {
+        if(this.list.removeElement(obj)){
+            to--;
+            return true;
+        }
         return false;
     }
 
@@ -85,7 +96,9 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public Object get(int index) {
-        return null;
+        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
+        Object toReturn = this.list.elementAt(index);
+        return toReturn;
     }
 
     @Override
@@ -95,12 +108,18 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public void add(int index, Object element) {
-
+        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
+        this.list.insertElementAt(element, index);
+        this.to++;
     }
 
     @Override
     public Object remove(int index) {
-        return null;
+        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
+        Object toRemove = this.list.elementAt(index);
+        this.list.removeElementAt(index);
+        this.to--;
+        return toRemove;
     }
 
     @Override

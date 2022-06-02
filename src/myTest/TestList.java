@@ -22,18 +22,88 @@ public class TestList
     @Before
     public void setup()
     {
-        System.out.println("Instantiate an empty List");
+        //System.out.println("Instantiate an empty List");
         l1 = new ListAdapter();
     }
 
     @After
     public void cleanup()
     {
-        System.out.println("Purge all remaining elements");
+        //System.out.println("Purge all remaining elements");
         l1.clear();
     }
 
     @Test
+    public void testSize(){
+        assertEquals(0, l1.size());
+        l1.add(0);
+        assertEquals(1, l1.size());
+        l1.remove(0);
+        assertEquals(0, l1.size());
+    }
+
+    @Test
+    public void testIsEmpty(){
+        assertEquals(true, l1.isEmpty());
+        l1.add(1);
+        assertEquals(false, l1.isEmpty());
+    }
+
+    @Test
+    public void testAdd(){
+        l1.add(1);
+        l1.add(2);
+        assertEquals(2, l1.get(1));
+        l1.remove(0);
+        assertEquals(2, l1.get(0));
+    }
+
+    @Test
+    public void testRemoveObject(){
+        l1.add(1);
+        l1.add(3);
+        l1.add(1, 2);
+        l1.add(3);
+        l1.add(4);
+        l1.remove(3);
+        assertEquals(3, l1.get(2));
+        assertEquals(4, l1.get(3));
+    }
+
+    @Test
+    public void testGet(){
+        l1.add(0);
+        l1.add(3);
+        assertEquals(0, l1.get(0));
+        assertEquals(3, l1.get(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> {
+            l1.get(2);
+        });
+    }
+
+    @Test
+    public void testAddSpecifiedIndex(){
+        l1.add(1);
+        l1.add(2);
+        l1.add(2, 3);
+        assertEquals(3, l1.get(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> {
+            l1.add(4, 5);
+        });
+    }
+
+    @Test
+    public void removeSpecifiedIndex(){
+        l1.add(0);
+        l1.add(3);
+        assertEquals(0, l1.remove(0));
+        assertEquals(3, l1.get(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> {
+            l1.remove(1);
+        });
+    }
+
+    /*@Test
     public void testBacking()
     {
         System.out.println("TestBacking");
@@ -207,4 +277,6 @@ public class TestList
         }
         System.out.println("}");
     }
+
+     */
 }
