@@ -50,6 +50,13 @@ public class TestList
     }
 
     @Test
+    public void testContains(){
+        l1.add(0);
+        assertEquals(true, l1.contains(0));
+        assertEquals(false, l1.contains(10));
+    }
+
+    @Test
     public void testAdd(){
         l1.add(1);
         l1.add(2);

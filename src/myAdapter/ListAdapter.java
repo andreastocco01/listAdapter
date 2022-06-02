@@ -25,7 +25,7 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public boolean contains(Object obj) {
-        return false;
+        return this.list.contains(obj);
     }
 
     @Override
