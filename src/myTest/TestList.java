@@ -57,6 +57,14 @@ public class TestList
     }
 
     @Test
+    public void testToArray(){
+        l1.add(0);
+        l1.add(1);
+        l2.add(2);
+        assertArrayEquals(new Object[]{0, 1, 2}, l1.toArray());
+    }
+
+    @Test
     public void testAdd(){
         l1.add(1);
         l1.add(2);
@@ -75,6 +83,17 @@ public class TestList
         l1.remove(3);
         assertEquals(3, l1.get(2));
         assertEquals(4, l1.get(3));
+    }
+
+    @Test
+    public void testContainsAll(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        l2.add(0);
+        l2.add(1);
+        l2.add(2);
+        assertEquals(false, l1.containsAll(l2));
     }
 
     @Test

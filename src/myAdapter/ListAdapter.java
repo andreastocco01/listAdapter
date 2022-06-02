@@ -15,12 +15,12 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public int size() {
-        return this.to - this.from;
+        return this.list.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return (this.size() == 0);
+        return this.list.isEmpty();
     }
 
     @Override
@@ -35,7 +35,9 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] toReturn = new Object[this.size()];
+        this.list.copyInto(toReturn);
+        return toReturn;
     }
 
     @Override
@@ -51,14 +53,15 @@ public class ListAdapter implements HList, HCollection{
      */
     @Override
     public boolean add(Object obj) {
-        this.add(this.size(), obj);
+        this.list.addElement(obj);
+        this.to++;
         return true;
     }
 
     @Override
     public boolean remove(Object obj) {
         if(this.list.removeElement(obj)){
-            to--;
+            this.to--;
             return true;
         }
         return false;
@@ -66,7 +69,11 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public boolean containsAll(HCollection coll) {
-        return false;
+        Object[] array = coll.toArray();
+        for(int i = 0; i < array.length; i++){
+            if(!this.contains(array[i])) return false;
+        }
+        return true;
     }
 
     @Override
