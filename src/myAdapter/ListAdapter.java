@@ -1,5 +1,7 @@
 package myAdapter;
 
+import java.util.NoSuchElementException;
+
 public class ListAdapter implements HList, HCollection{
     private int from, to;
     private Vector list;
