@@ -29,7 +29,7 @@ public class Vector {
         vector = new java.util.Vector(initialCapacity, capacityIncrement);
     }
 
-    public void addElement(Object obj){
+    public void addElement(Object obj, Object o){
         vector.addElement(obj);
     }
 

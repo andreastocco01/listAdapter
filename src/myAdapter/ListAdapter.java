@@ -7,36 +7,39 @@ import java.util.NoSuchElementException;
 public class ListAdapter implements HList, HCollection{
     private int from, to;
     private Vector list;
-    boolean isFather;
+    ListAdapter father;
 
     public ListAdapter() {
         from = 0;
         to = 0;
         list = new Vector();
-        this.isFather = false;
+        father = null;
     }
 
-    public ListAdapter(int from, int to, ListAdapter listAdapter){
+    private ListAdapter(int from, int to, ListAdapter listAdapter){
         this.from = from;
         this.to = to;
         this.list = listAdapter.list;
-        this.isFather = false;
-        listAdapter.isFather = true;
+        this.father = listAdapter;
     }
 
     @Override
     public int size() {
-        return this.list.size();
+        return to - from;
     }
 
     @Override
     public boolean isEmpty() {
-        return this.list.isEmpty();
+        return to == from;
     }
 
     @Override
     public boolean contains(Object obj) {
-        return this.list.contains(obj);
+        HListIterator iter = listIterator();
+        while (iter.hasNext()){
+            if(iter.next().equals(obj)) return true;
+        }
+        return false;
     }
 
     @Override
@@ -46,8 +49,13 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public Object[] toArray() {
-        Object[] toReturn = new Object[this.size()];
-        this.list.copyInto(toReturn);
+        Object[] toReturn = new Object[size()];
+        HListIterator iter = listIterator();
+        int i = 0;
+        while (iter.hasNext()){
+            toReturn[i] = iter.next();
+            i++;
+        }
         return toReturn;
     }
 
@@ -60,19 +68,25 @@ public class ListAdapter implements HList, HCollection{
     @Override
     public Object[] toArray(Object[] arrayTarget) {
         if(arrayTarget == null) throw new NullPointerException();
-        if(arrayTarget.length < this.size()){
-            Object[] toReturn = this.toArray();
+        if(arrayTarget.length < size()){
+            Object[] toReturn = toArray();
             return toReturn;
         }else{
+            HListIterator iter = listIterator();
             int i = 0;
-            for(; i < this.size(); i++){
-                arrayTarget[i] = this.get(i);
+            while (iter.hasNext()){
+                arrayTarget[i] = iter.next();
             }
             for(; i < arrayTarget.length; i++){
                 arrayTarget[i] = null;
             }
             return arrayTarget;
         }
+    }
+
+    private void refreshIndexes(int n){
+        to += n;
+        if(father != null) father.refreshIndexes(n);
     }
 
     /**
@@ -83,16 +97,18 @@ public class ListAdapter implements HList, HCollection{
      */
     @Override
     public boolean add(Object obj) {
-        this.list.addElement(obj);
-        this.to++;
+        list.addElement(to, obj);
         return true;
     }
 
     @Override
     public boolean remove(Object obj) {
-        if(this.list.removeElement(obj)){
-            this.to--;
-            return true;
+        HListIterator iter = listIterator();
+        while (iter.hasNext()){
+            if(iter.next().equals(obj)){
+                remove(iter.previousIndex());
+                return true;
+            }
         }
         return false;
     }
@@ -102,7 +118,7 @@ public class ListAdapter implements HList, HCollection{
         if(coll == null) throw new NullPointerException();
         Object[] array = coll.toArray();
         for(int i = 0; i < array.length; i++){
-            if(!this.contains(array[i])) return false;
+            if(!contains(array[i])) return false;
         }
         return true;
     }
@@ -111,8 +127,9 @@ public class ListAdapter implements HList, HCollection{
     public boolean addAll(HCollection coll) {
         if(coll == null) throw new NullPointerException();
         HIterator iterator = coll.iterator();
+        HListIterator iter = listIterator(size());
         while(iterator.hasNext()){
-            this.add(iterator.next());
+            iter.add(iterator.next());
         }
         return true;
     }
@@ -122,10 +139,9 @@ public class ListAdapter implements HList, HCollection{
         if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
         if(coll == null) throw new NullPointerException();
         HIterator iterator = coll.iterator();
-        int i = index;
+        HListIterator iter = listIterator(index);
         while(iterator.hasNext()){
-            this.add(i, iterator.next());
-            i++;
+            iter.add(iterator.next());
         }
         return true;
     }
@@ -136,7 +152,7 @@ public class ListAdapter implements HList, HCollection{
         boolean isChanged = false;
         HIterator iterator = coll.iterator();
         while(iterator.hasNext()){
-            if(this.remove(iterator.next())){
+            if(remove(iterator.next())){
                 isChanged = true;
             }
         }
@@ -147,11 +163,11 @@ public class ListAdapter implements HList, HCollection{
     public boolean retainAll(HCollection coll) {
         if(coll == null) throw new NullPointerException();
         boolean isChanged = false;
-        HListIterator iterator = this.listIterator();
+        HListIterator iterator = listIterator();
         while(iterator.hasNext()){
             if(!coll.contains(iterator.next())){
                 isChanged = true;
-                this.remove(iterator.previousIndex());
+                remove(iterator.previousIndex());
             }
         }
         return isChanged;
@@ -159,31 +175,39 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public void clear() {
-        this.list.removeAllElements();
+        while(size() > 0){
+            remove(0);
+        }
     }
 
     @Override
     public boolean equals(Object obj){
-        return (this.list.equals(obj));
+        ListAdapter sub = new ListAdapter();
+        HListIterator iter = listIterator();
+        while(iter.hasNext()) sub.add(iter.next());
+        return sub.list.equals(obj);
     }
 
     @Override
     public int hashCode(){
-        return this.list.hashCode();
+        ListAdapter sub = new ListAdapter();
+        HListIterator iter = listIterator();
+        while(iter.hasNext()) sub.add(iter.next());
+        return sub.list.hashCode();
     }
 
     @Override
     public Object get(int index) {
-        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
-        Object toReturn = this.list.elementAt(index);
+        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException();
+        Object toReturn = list.elementAt(index + from);
         return toReturn;
     }
 
     @Override
     public Object set(int index, Object element) {
-        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
-        Object toReturn = this.get(index);
-        this.list.setElementAt(element, index);
+        if(index < 0 || index >= this.size()) throw new IndexOutOfBoundsException();
+        Object toReturn = get(index + from);
+        list.setElementAt(element, index + from);
         return toReturn;
     }
 
@@ -191,26 +215,32 @@ public class ListAdapter implements HList, HCollection{
     public void add(int index, Object element) {
         if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
         this.list.insertElementAt(element, index);
-        this.to++;
+        refreshIndexes(1);
     }
 
     @Override
     public Object remove(int index) {
-        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
-        Object toRemove = this.list.elementAt(index);
-        this.list.removeElementAt(index);
-        this.to--;
+        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException();
+        Object toRemove = list.elementAt(index + from);
+        list.removeElementAt(index + from);
+        refreshIndexes(-1);
         return toRemove;
     }
 
     @Override
     public int indexOf(Object obj) {
-        return this.list.indexOf(obj);
+        ListAdapter sub = new ListAdapter();
+        HListIterator iter = listIterator();
+        while(iter.hasNext()) sub.add(iter.next());
+        return sub.list.indexOf(obj);
     }
 
     @Override
     public int lastIndexOf(Object obj) {
-        return this.list.lastIndexOf(obj);
+        ListAdapter sub = new ListAdapter();
+        HListIterator iter = listIterator(size());
+        while(iter.hasPrevious()) sub.add(iter.previous());
+        return sub.list.indexOf(obj);
     }
 
     @Override
@@ -225,6 +255,7 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public HList subList(int fromIndex, int toIndex) {
+        if(fromIndex < 0 || toIndex > size() || fromIndex > toIndex) throw new IndexOutOfBoundsException();
         return new ListAdapter(fromIndex, toIndex, this);
     }
 
@@ -233,20 +264,20 @@ public class ListAdapter implements HList, HCollection{
         private int lastCall; // 0: invalid, 1: next, -1: previous
 
         public ListIterator(){
-            this.previous = -1;
-            this.next = 0;
+            this.next = ListAdapter.this.from;
+            this.previous = next - 1;
             this.lastCall = 0;
         }
 
         public ListIterator(int index){
             if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
-            this.next = index;
-            this.previous = index - 1;
+            this.next = index + from;
+            this.previous = next -1;
             this.lastCall = 0;
         }
         @Override
         public boolean hasNext() {
-            return next < size();
+            return next < ListAdapter.this.to;
         }
 
         @Override
@@ -261,7 +292,7 @@ public class ListAdapter implements HList, HCollection{
 
         @Override
         public boolean hasPrevious() {
-            return previous >= 0;
+            return previous >= ListAdapter.this.from;
         }
 
         @Override
@@ -316,5 +347,17 @@ public class ListAdapter implements HList, HCollection{
             previous = next - 1;
             lastCall = 0;
         }
+    }
+
+    public static void main(String[] args) {
+        ListAdapter list = new ListAdapter();
+        list.add(12);
+        list.add(0);
+        list.add(0);
+        HListIterator iter = list.listIterator();
+        System.out.println(iter.previousIndex());
+        System.out.println(list.to);
+        System.out.println(iter.next());
+        while(iter.hasNext()) System.out.println(iter.next());
     }
 }
