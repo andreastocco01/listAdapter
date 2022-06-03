@@ -166,12 +166,12 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public HListIterator listIterator() {
-        return null;
+        return new ListIterator();
     }
 
     @Override
     public HListIterator listIterator(int index) {
-        return null;
+        return new ListIterator(index);
     }
 
     @Override
@@ -181,13 +181,19 @@ public class ListAdapter implements HList, HCollection{
 
     private class ListIterator implements HIterator, HListIterator{
         private int previous, next;
-        private int lastCall; // 0: inizio, 1: next, -1: previous
-        private final int INVALID_STATE = -1;
+        private int lastCall; // 0: invalid, 1: next, -1: previous
 
         public ListIterator(){
-            this.previous = INVALID_STATE;
+            this.previous = -1;
             this.next = 0;
-            lastCall = 0;
+            this.lastCall = 0;
+        }
+
+        public ListIterator(int index){
+            if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
+            this.next = index;
+            this.previous = index - 1;
+            this.lastCall = 0;
         }
         @Override
         public boolean hasNext() {
@@ -199,7 +205,7 @@ public class ListAdapter implements HList, HCollection{
             if(!hasNext()) throw new NoSuchElementException();
             Object toReturn = get(next);
             next++;
-            previous++;
+            previous = next - 1;
             lastCall = 1;
             return toReturn;
         }
@@ -214,7 +220,7 @@ public class ListAdapter implements HList, HCollection{
             if(!hasPrevious()) throw new NoSuchElementException();
             Object toReturn = get(previous);
             previous--;
-            next--;
+            next = previous + 1;
             lastCall = -1;
             return toReturn;
         }
@@ -231,29 +237,26 @@ public class ListAdapter implements HList, HCollection{
 
         @Override
         public void remove() {
-            if(previous == INVALID_STATE || next == INVALID_STATE) throw new IllegalStateException();
+            if(lastCall == 0) throw new IllegalStateException();
             if(lastCall == 1){
                 ListAdapter.this.remove(previous);
                 next--;
-                previous = INVALID_STATE;
+                previous = next - 1;
             }
             if(lastCall == -1){
                 ListAdapter.this.remove(next);
-                next = INVALID_STATE;
             }
+            lastCall = 0;
         }
 
         @Override
         public void set(Object obj) {
-            if(previous == INVALID_STATE || next == INVALID_STATE) throw new IllegalStateException();
+            if(lastCall == 0) throw new IllegalStateException();
             if(lastCall == 1){
                 ListAdapter.this.set(previous, obj);
-                next--;
-                previous = INVALID_STATE;
             }
             if(lastCall == -1){
                 ListAdapter.this.set(next, obj);
-                next = INVALID_STATE;
             }
         }
 
@@ -261,7 +264,8 @@ public class ListAdapter implements HList, HCollection{
         public void add(Object obj) {
             ListAdapter.this.add(next, obj);
             next++;
-            previous++;
+            previous = next - 1;
+            lastCall = 0;
         }
     }
 }
