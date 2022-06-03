@@ -13,6 +13,14 @@ public class ListAdapter implements HList, HCollection{
         from = 0;
         to = 0;
         list = new Vector();
+        this.isFather = true;
+    }
+
+    public ListAdapter(int from, int to){
+        this.from = from;
+        this.to = to;
+        list = new Vector();
+        list.setSize(to - from);
     }
 
     @Override
@@ -150,9 +158,7 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public void clear() {
-        while(this.size() > 0){
-            remove(0);
-        }
+        this.list.removeAllElements();
     }
 
     @Override
@@ -198,32 +204,12 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public int indexOf(Object obj) {
-        int index = -1;
-        HListIterator iterator = this.listIterator();
-        int i = 0;
-        while(iterator.hasNext()){
-            if(iterator.next() == obj){
-                index = i;
-                break;
-            }
-            i++;
-        }
-        return index;
+        return this.list.indexOf(obj);
     }
 
     @Override
     public int lastIndexOf(Object obj) {
-        int index = -1;
-        HListIterator iterator = this.listIterator(this.size());
-        int i = this.size() - 1;
-        while(iterator.hasPrevious()){
-            if(iterator.previous() == obj){
-                index = i;
-                break;
-            }
-            i--;
-        }
-        return index;
+        return this.list.lastIndexOf(obj);
     }
 
     @Override
@@ -238,6 +224,7 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public HList subList(int fromIndex, int toIndex) {
+        HList subList = new ListAdapter(fromIndex, toIndex);
         return null;
     }
 
