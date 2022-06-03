@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.*;
 
 //import java.util.NoSuchElementException;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
@@ -65,6 +66,19 @@ public class TestList
     }
 
     @Test
+    public void toArrayWithTarget(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        Object[] target = new Object[l1.size()];
+        assertArrayEquals(new Object[]{0, 1, 2}, l1.toArray(target));
+        target = new Object[l1.size() + 2];
+        assertArrayEquals(new Object[]{0, 1, 2, null, null}, l1.toArray(target));
+        target = new Object[0];
+        assertArrayEquals(new Object[]{0, 1, 2}, l1.toArray(target));
+    }
+
+    @Test
     public void testAdd(){
         l1.add(1);
         l1.add(2);
@@ -108,6 +122,15 @@ public class TestList
         assertThrows(IndexOutOfBoundsException.class, () -> {
             l1.get(2);
         });
+    }
+
+    @Test
+    public void testSet(){
+        l1.add(0);
+        l1.add(1);
+        l1.set(0, 1);
+        assertEquals(1, l1.get(0));
+        assertEquals(1, l1.get(1));
     }
 
     @Test
@@ -308,4 +331,64 @@ public class TestList
     }
 
      */
+
+    @Test
+    public void testHasNext(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        HIterator iterator = l1.iterator();
+        assertEquals(true, iterator.hasNext());
+        iterator.next();
+        assertEquals(true, iterator.hasNext());
+        iterator.next();
+        iterator.next();
+        assertEquals(false, iterator.hasNext());
+    }
+
+    @Test
+    public void testNext(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        HIterator iter = l1.iterator();
+        assertEquals(0, iter.next());
+        iter.next();
+        assertEquals(2, iter.next());
+        assertThrows(NoSuchElementException.class, () -> {
+            iter.next();
+        });
+    }
+
+    @Test
+    public void testHasPrevious(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        HListIterator iter = (HListIterator) l1.iterator();
+        assertEquals(false, iter.hasPrevious());
+        while (iter.hasNext()) iter.next();
+        assertEquals(true, iter.hasPrevious());
+        iter.previous();
+        iter.previous();
+        assertEquals(true, iter.hasPrevious());
+        iter.previous();
+        assertEquals(false, iter.hasPrevious());
+    }
+
+    @Test
+    public void testPrevious(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        HListIterator iter = (HListIterator) l1.iterator();
+        assertThrows(NoSuchElementException.class, () -> {
+            iter.previous();
+        });
+        iter.next();
+        assertEquals(0, iter.previous());
+        assertThrows(NoSuchElementException.class, () -> {
+            iter.previous();
+        });
+    }
 }

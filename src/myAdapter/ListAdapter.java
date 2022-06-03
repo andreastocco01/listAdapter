@@ -31,7 +31,7 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public HIterator iterator() {
-        return null;
+        return new ListIterator();
     }
 
     @Override
@@ -41,9 +41,28 @@ public class ListAdapter implements HList, HCollection{
         return toReturn;
     }
 
+    /**
+     *
+     * la lista puo' contenere valori null.
+     * se arrayTarget ha dimensioni maggiori della lista, le posizioni non riempite vengono settate a null.
+     * questo puo' creare confusione
+     */
     @Override
     public Object[] toArray(Object[] arrayTarget) {
-        return new Object[0];
+        if(arrayTarget == null) throw new NullPointerException();
+        if(arrayTarget.length < this.size()){
+            Object[] toReturn = this.toArray();
+            return toReturn;
+        }else{
+            int i = 0;
+            for(; i < this.size(); i++){
+                arrayTarget[i] = this.get(i);
+            }
+            for(; i < arrayTarget.length; i++){
+                arrayTarget[i] = null;
+            }
+            return arrayTarget;
+        }
     }
 
     /**
@@ -70,6 +89,7 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public boolean containsAll(HCollection coll) {
+        if(coll == null) throw new NullPointerException();
         Object[] array = coll.toArray();
         for(int i = 0; i < array.length; i++){
             if(!this.contains(array[i])) return false;
@@ -111,7 +131,10 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public Object set(int index, Object element) {
-        return null;
+        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
+        Object toReturn = this.get(index);
+        this.list.setElementAt(element, index);
+        return toReturn;
     }
 
     @Override
@@ -153,5 +176,66 @@ public class ListAdapter implements HList, HCollection{
     @Override
     public HList subList(int fromIndex, int toIndex) {
         return null;
+    }
+
+    private class ListIterator implements HIterator, HListIterator{
+        private int previous, next;
+
+        public ListIterator(){
+            this.previous = -1;
+            this.next = 0;
+        }
+        @Override
+        public boolean hasNext() {
+            return next < size();
+        }
+
+        @Override
+        public Object next() {
+            if(!hasNext()) throw new NoSuchElementException();
+            Object toReturn = get(next);
+            next++;
+            previous++;
+            return toReturn;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return previous >= 0;
+        }
+
+        @Override
+        public Object previous() {
+            if(!hasPrevious()) throw new NoSuchElementException();
+            Object toReturn = get(previous);
+            previous--;
+            next--;
+            return toReturn;
+        }
+
+        @Override
+        public int nextIndex() {
+            return 0;
+        }
+
+        @Override
+        public int previousIndex() {
+            return 0;
+        }
+
+        @Override
+        public void remove() {
+
+        }
+
+        @Override
+        public void set(Object obj) {
+
+        }
+
+        @Override
+        public void add(Object obj) {
+
+        }
     }
 }
