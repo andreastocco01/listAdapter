@@ -13,14 +13,15 @@ public class ListAdapter implements HList, HCollection{
         from = 0;
         to = 0;
         list = new Vector();
-        this.isFather = true;
+        this.isFather = false;
     }
 
-    public ListAdapter(int from, int to){
+    public ListAdapter(int from, int to, ListAdapter listAdapter){
         this.from = from;
         this.to = to;
-        list = new Vector();
-        list.setSize(to - from);
+        this.list = listAdapter.list;
+        this.isFather = false;
+        listAdapter.isFather = true;
     }
 
     @Override
@@ -224,8 +225,7 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public HList subList(int fromIndex, int toIndex) {
-        HList subList = new ListAdapter(fromIndex, toIndex);
-        return null;
+        return new ListAdapter(fromIndex, toIndex, this);
     }
 
     private class ListIterator implements HIterator, HListIterator{
