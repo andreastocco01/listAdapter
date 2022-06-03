@@ -1,6 +1,7 @@
 package myAdapter;
 
 import javax.imageio.plugins.tiff.ExifInteroperabilityTagSet;
+import java.util.ListResourceBundle;
 import java.util.NoSuchElementException;
 
 public class ListAdapter implements HList, HCollection{
@@ -180,10 +181,13 @@ public class ListAdapter implements HList, HCollection{
 
     private class ListIterator implements HIterator, HListIterator{
         private int previous, next;
+        private int lastCall; // 0: inizio, 1: next, -1: previous
+        private final int INVALID_STATE = -1;
 
         public ListIterator(){
-            this.previous = -1;
+            this.previous = INVALID_STATE;
             this.next = 0;
+            lastCall = 0;
         }
         @Override
         public boolean hasNext() {
@@ -196,6 +200,7 @@ public class ListAdapter implements HList, HCollection{
             Object toReturn = get(next);
             next++;
             previous++;
+            lastCall = 1;
             return toReturn;
         }
 
@@ -210,32 +215,53 @@ public class ListAdapter implements HList, HCollection{
             Object toReturn = get(previous);
             previous--;
             next--;
+            lastCall = -1;
             return toReturn;
         }
 
         @Override
         public int nextIndex() {
-            return 0;
+            return next;
         }
 
         @Override
         public int previousIndex() {
-            return 0;
+            return previous;
         }
 
         @Override
         public void remove() {
-
+            if(previous == INVALID_STATE || next == INVALID_STATE) throw new IllegalStateException();
+            if(lastCall == 1){
+                ListAdapter.this.remove(previous);
+                next--;
+                previous = INVALID_STATE;
+            }
+            if(lastCall == -1){
+                ListAdapter.this.remove(next);
+                next = INVALID_STATE;
+            }
         }
 
         @Override
         public void set(Object obj) {
-
+            if(previous == INVALID_STATE || next == INVALID_STATE) throw new IllegalStateException();
+            if(lastCall == 1){
+                ListAdapter.this.set(previous, obj);
+                next--;
+                previous = INVALID_STATE;
+            }
+            if(lastCall == -1){
+                ListAdapter.this.set(next, obj);
+                next = INVALID_STATE;
+            }
         }
 
         @Override
         public void add(Object obj) {
-
+            ListAdapter.this.add(next, obj);
+            next++;
+            previous++;
         }
     }
 }

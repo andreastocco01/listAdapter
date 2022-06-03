@@ -247,6 +247,7 @@ public class TestList
             iterate(l1.iterator());
         }
     }
+     */
 
     @Test
     public void testIterator3()
@@ -330,8 +331,6 @@ public class TestList
         System.out.println("}");
     }
 
-     */
-
     @Test
     public void testHasNext(){
         l1.add(0);
@@ -351,8 +350,10 @@ public class TestList
         l1.add(0);
         l1.add(1);
         l1.add(2);
-        HIterator iter = l1.iterator();
+        HListIterator iter = (HListIterator) l1.iterator();
         assertEquals(0, iter.next());
+        iter.next();
+        iter.previous();
         iter.next();
         assertEquals(2, iter.next());
         assertThrows(NoSuchElementException.class, () -> {
@@ -390,5 +391,75 @@ public class TestList
         assertThrows(NoSuchElementException.class, () -> {
             iter.previous();
         });
+    }
+
+    @Test
+    public void testNextIndex(){
+        l1.add(0);
+        l1.add(0);
+        l1.add(0);
+        HListIterator iter = (HListIterator) l1.iterator();
+        assertEquals(0, iter.nextIndex());
+        while(iter.hasNext()) iter.next();
+        assertEquals(l1.size(), iter.nextIndex());
+    }
+
+    @Test
+    public void testPreviousIndex(){
+        l1.add(0);
+        l1.add(0);
+        l1.add(0);
+        HListIterator iter = (HListIterator) l1.iterator();
+        assertEquals(-1, iter.previousIndex());
+        while(iter.hasNext()) iter.next();
+        assertEquals(2, iter.previousIndex());
+    }
+
+    @Test
+    public void testRemove(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        l1.add(4);
+        HListIterator iter = (HListIterator) l1.iterator();
+        assertThrows(IllegalStateException.class, () -> {
+            iter.remove();
+        });
+        iter.next();
+        iter.remove();
+        assertEquals(1, iter.next());
+        while(iter.hasNext())iter.next();
+        iter.previous();
+        iter.remove();
+        assertEquals(2, iter.previous());
+        assertEquals(2, l1.size());
+        assertEquals(1, l1.get(0));
+        assertEquals(2, l1.get(1));
+    }
+
+    @Test
+    public void testSetIterator(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        l1.add(4);
+        HListIterator iter = (HListIterator) l1.iterator();
+        assertThrows(IllegalStateException.class, () -> {
+            iter.set(3);
+        });
+        iter.next();
+        iter.set(3);
+        assertEquals(3, l1.get(0));
+    }
+
+    @Test
+    public void testAddIterator(){
+        HListIterator iter = (HListIterator) l1.iterator();
+        iter.add(0);
+        iter.add(2);
+        iter.previous();
+        iter.add(1);
+        assertEquals(1, iter.previous());
+        assertEquals(0, iter.previous());
     }
 }
