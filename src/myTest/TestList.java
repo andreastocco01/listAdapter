@@ -114,6 +114,64 @@ public class TestList
     }
 
     @Test
+    public void testAddAll(){
+        l1.add(0);
+        l1.add(1);
+        ListAdapter l3 = new ListAdapter();
+        l3.add(2);
+        l3.add(3);
+        l1.addAll(l3);
+        assertArrayEquals(new Object[]{0, 1, 2, 3}, l1.toArray());
+    }
+
+    @Test
+    public void testAddAllParameter(){
+        l1.add(0);
+        l1.add(1);
+        ListAdapter l3 = new ListAdapter();
+        l3.add(2);
+        l3.add(3);
+        l1.addAll(1, l3);
+        assertArrayEquals(new Object[]{0, 2, 3, 1}, l1.toArray());
+    }
+
+    @Test
+    public void testRemoveAll(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        ListAdapter l3 = new ListAdapter();
+        l3.add(0);
+        l3.add(1);
+        l1.removeAll(l3);
+        assertEquals(1, l1.size());
+        assertArrayEquals(new Object[]{2}, l1.toArray());
+    }
+
+    @Test
+    public void testRetainAll(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        ListAdapter l3 = new ListAdapter();
+        l3.add(0);
+        l3.add(1);
+        l1.retainAll(l3);
+        assertEquals(2, l1.size());
+        assertArrayEquals(new Object[]{0, 1}, l1.toArray());
+    }
+
+    @Test
+    public void testClear(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        l1.clear();
+        assertArrayEquals(new Object[]{}, l1.toArray());
+        assertEquals(0, l1.size());
+    }
+
+    @Test
     public void testGet(){
         l1.add(0);
         l1.add(3);
@@ -145,7 +203,7 @@ public class TestList
     }
 
     @Test
-    public void removeSpecifiedIndex(){
+    public void testRemoveSpecifiedIndex(){
         l1.add(0);
         l1.add(3);
         assertEquals(0, l1.remove(0));
@@ -153,6 +211,26 @@ public class TestList
         assertThrows(IndexOutOfBoundsException.class, () -> {
             l1.remove(1);
         });
+    }
+
+    @Test
+    public void testIndexOf(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        l1.add(2);
+        assertEquals(2, l1.indexOf(2));
+    }
+
+    @Test
+    public void testLastIndexOf(){
+        l1.add(0);
+        l1.add(1);
+        l1.add(2);
+        l1.add(2);
+        l1.add(2);
+        assertEquals(4, l1.lastIndexOf(2));
+        assertEquals(1, l1.lastIndexOf(1));
     }
 
     /*@Test

@@ -100,27 +100,69 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public boolean addAll(HCollection coll) {
-        return false;
+        if(coll == null) throw new NullPointerException();
+        HIterator iterator = coll.iterator();
+        while(iterator.hasNext()){
+            this.add(iterator.next());
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(int index, HCollection coll) {
-        return false;
+        if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
+        if(coll == null) throw new NullPointerException();
+        HIterator iterator = coll.iterator();
+        int i = index;
+        while(iterator.hasNext()){
+            this.add(i, iterator.next());
+            i++;
+        }
+        return true;
     }
 
     @Override
     public boolean removeAll(HCollection coll) {
-        return false;
+        if(coll == null) throw new NullPointerException();
+        boolean isChanged = false;
+        HIterator iterator = coll.iterator();
+        while(iterator.hasNext()){
+            if(this.remove(iterator.next())){
+                isChanged = true;
+            }
+        }
+        return isChanged;
     }
 
     @Override
     public boolean retainAll(HCollection coll) {
-        return false;
+        if(coll == null) throw new NullPointerException();
+        boolean isChanged = false;
+        HListIterator iterator = this.listIterator();
+        while(iterator.hasNext()){
+            if(!coll.contains(iterator.next())){
+                isChanged = true;
+                this.remove(iterator.previousIndex());
+            }
+        }
+        return isChanged;
     }
 
     @Override
     public void clear() {
+        while(this.size() > 0){
+            remove(0);
+        }
+    }
 
+    @Override
+    public boolean equals(Object obj){
+        return (this.list.equals(obj));
+    }
+
+    @Override
+    public int hashCode(){
+        return this.list.hashCode();
     }
 
     @Override
@@ -156,12 +198,32 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public int indexOf(Object obj) {
-        return 0;
+        int index = -1;
+        HListIterator iterator = this.listIterator();
+        int i = 0;
+        while(iterator.hasNext()){
+            if(iterator.next() == obj){
+                index = i;
+                break;
+            }
+            i++;
+        }
+        return index;
     }
 
     @Override
     public int lastIndexOf(Object obj) {
-        return 0;
+        int index = -1;
+        HListIterator iterator = this.listIterator(this.size());
+        int i = this.size() - 1;
+        while(iterator.hasPrevious()){
+            if(iterator.previous() == obj){
+                index = i;
+                break;
+            }
+            i--;
+        }
+        return index;
     }
 
     @Override
