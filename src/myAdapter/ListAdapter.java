@@ -1,5 +1,6 @@
 package myAdapter;
 
+import javax.imageio.plugins.tiff.ExifInteroperabilityTagSet;
 import java.util.NoSuchElementException;
 
 public class ListAdapter implements HList, HCollection{
