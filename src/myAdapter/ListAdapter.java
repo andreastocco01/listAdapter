@@ -1,13 +1,14 @@
 package myAdapter;
 
 import javax.imageio.plugins.tiff.ExifInteroperabilityTagSet;
+import java.util.List;
 import java.util.ListResourceBundle;
 import java.util.NoSuchElementException;
 
 public class ListAdapter implements HList, HCollection{
     private int from, to;
     private Vector list;
-    ListAdapter father;
+    private ListAdapter father;
 
     public ListAdapter() {
         from = 0;
@@ -23,6 +24,12 @@ public class ListAdapter implements HList, HCollection{
         this.father = listAdapter;
     }
 
+    public ListAdapter(HCollection coll){
+        this();
+        HIterator iter = coll.iterator();
+        while(iter.hasNext()) add(iter.next());
+    }
+
     @Override
     public int size() {
         return to - from;
@@ -36,8 +43,15 @@ public class ListAdapter implements HList, HCollection{
     @Override
     public boolean contains(Object obj) {
         HListIterator iter = listIterator();
-        while (iter.hasNext()){
-            if(iter.next().equals(obj)) return true;
+        if(obj == null){
+            while(iter.hasNext()){
+                if(iter.next() == null) return true;
+            }
+        }else{
+            while(iter.hasNext()){
+                Object current = iter.next();
+                if(current != null && current.equals(obj)) return true;
+            }
         }
         return false;
     }
@@ -76,6 +90,7 @@ public class ListAdapter implements HList, HCollection{
             int i = 0;
             while (iter.hasNext()){
                 arrayTarget[i] = iter.next();
+                i++;
             }
             for(; i < arrayTarget.length; i++){
                 arrayTarget[i] = null;
@@ -97,17 +112,27 @@ public class ListAdapter implements HList, HCollection{
      */
     @Override
     public boolean add(Object obj) {
-        list.addElement(to, obj);
+        add(to, obj);
         return true;
     }
 
     @Override
     public boolean remove(Object obj) {
         HListIterator iter = listIterator();
-        while (iter.hasNext()){
-            if(iter.next().equals(obj)){
-                remove(iter.previousIndex());
-                return true;
+        if(obj == null){
+            while(iter.hasNext()){
+                if(iter.next() == null){
+                    remove(iter.previousIndex());
+                    return true;
+                }
+            }
+        }else{
+            while(iter.hasNext()){
+                Object current = iter.next();
+                if(current != null && current.equals(obj)){
+                    remove(iter.previousIndex());
+                    return true;
+                }
             }
         }
         return false;
@@ -152,7 +177,8 @@ public class ListAdapter implements HList, HCollection{
         boolean isChanged = false;
         HIterator iterator = coll.iterator();
         while(iterator.hasNext()){
-            if(remove(iterator.next())){
+            Object current = iterator.next();
+            while(remove(current)){
                 isChanged = true;
             }
         }
@@ -167,7 +193,7 @@ public class ListAdapter implements HList, HCollection{
         while(iterator.hasNext()){
             if(!coll.contains(iterator.next())){
                 isChanged = true;
-                remove(iterator.previousIndex());
+                iterator.remove();
             }
         }
         return isChanged;
@@ -182,10 +208,16 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public boolean equals(Object obj){
-        ListAdapter sub = new ListAdapter();
+        if(! (obj instanceof ListAdapter)) return false;
+        ListAdapter other = (ListAdapter) obj;
+        if(this.size() != other.size()) return false;
         HListIterator iter = listIterator();
-        while(iter.hasNext()) sub.add(iter.next());
-        return sub.list.equals(obj);
+        int i = 0;
+        while (iter.hasNext()){
+            if(iter.next() != other.get(i)) return false;
+            i++;
+        }
+        return true;
     }
 
     @Override
@@ -213,8 +245,8 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public void add(int index, Object element) {
-        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
-        this.list.insertElementAt(element, index);
+        if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
+        list.insertElementAt(element, index + from);
         refreshIndexes(1);
     }
 
@@ -238,9 +270,9 @@ public class ListAdapter implements HList, HCollection{
     @Override
     public int lastIndexOf(Object obj) {
         ListAdapter sub = new ListAdapter();
-        HListIterator iter = listIterator(size());
-        while(iter.hasPrevious()) sub.add(iter.previous());
-        return sub.list.indexOf(obj);
+        HListIterator iter = listIterator();
+        while(iter.hasNext()) sub.add(iter.next());
+        return sub.list.lastIndexOf(obj);
     }
 
     @Override
@@ -256,7 +288,7 @@ public class ListAdapter implements HList, HCollection{
     @Override
     public HList subList(int fromIndex, int toIndex) {
         if(fromIndex < 0 || toIndex > size() || fromIndex > toIndex) throw new IndexOutOfBoundsException();
-        return new ListAdapter(fromIndex, toIndex, this);
+        return new ListAdapter(fromIndex + from, toIndex + from, this);
     }
 
     private class ListIterator implements HIterator, HListIterator{
@@ -264,15 +296,13 @@ public class ListAdapter implements HList, HCollection{
         private int lastCall; // 0: invalid, 1: next, -1: previous
 
         public ListIterator(){
-            this.next = ListAdapter.this.from;
-            this.previous = next - 1;
-            this.lastCall = 0;
+            this(0);
         }
 
         public ListIterator(int index){
             if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
             this.next = index + from;
-            this.previous = next -1;
+            this.previous = next - 1;
             this.lastCall = 0;
         }
         @Override
@@ -283,7 +313,7 @@ public class ListAdapter implements HList, HCollection{
         @Override
         public Object next() {
             if(!hasNext()) throw new NoSuchElementException();
-            Object toReturn = get(next);
+            Object toReturn = get(next - from);
             next++;
             previous = next - 1;
             lastCall = 1;
@@ -298,7 +328,7 @@ public class ListAdapter implements HList, HCollection{
         @Override
         public Object previous() {
             if(!hasPrevious()) throw new NoSuchElementException();
-            Object toReturn = get(previous);
+            Object toReturn = get(previous - from);
             previous--;
             next = previous + 1;
             lastCall = -1;
@@ -307,24 +337,24 @@ public class ListAdapter implements HList, HCollection{
 
         @Override
         public int nextIndex() {
-            return next;
+            return next + from;
         }
 
         @Override
         public int previousIndex() {
-            return previous;
+            return previous + from;
         }
 
         @Override
         public void remove() {
             if(lastCall == 0) throw new IllegalStateException();
             if(lastCall == 1){
-                ListAdapter.this.remove(previous);
+                ListAdapter.this.remove(previous - from);
                 next--;
                 previous = next - 1;
             }
             if(lastCall == -1){
-                ListAdapter.this.remove(next);
+                ListAdapter.this.remove(next - from);
             }
             lastCall = 0;
         }
@@ -333,31 +363,19 @@ public class ListAdapter implements HList, HCollection{
         public void set(Object obj) {
             if(lastCall == 0) throw new IllegalStateException();
             if(lastCall == 1){
-                ListAdapter.this.set(previous, obj);
+                ListAdapter.this.set(previous - from, obj);
             }
             if(lastCall == -1){
-                ListAdapter.this.set(next, obj);
+                ListAdapter.this.set(next - from, obj);
             }
         }
 
         @Override
         public void add(Object obj) {
-            ListAdapter.this.add(next, obj);
+            ListAdapter.this.add(next - from, obj);
             next++;
             previous = next - 1;
             lastCall = 0;
         }
-    }
-
-    public static void main(String[] args) {
-        ListAdapter list = new ListAdapter();
-        list.add(12);
-        list.add(0);
-        list.add(0);
-        HListIterator iter = list.listIterator();
-        System.out.println(iter.previousIndex());
-        System.out.println(list.to);
-        System.out.println(iter.next());
-        while(iter.hasNext()) System.out.println(iter.next());
     }
 }

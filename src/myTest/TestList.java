@@ -233,7 +233,7 @@ public class TestList
         assertEquals(1, l1.lastIndexOf(1));
     }
 
-    /*@Test
+    @Test
     public void testBacking()
     {
         System.out.println("TestBacking");
@@ -325,7 +325,7 @@ public class TestList
             iterate(l1.iterator());
         }
     }
-     */
+
 
     @Test
     public void testIterator3()
