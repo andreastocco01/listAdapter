@@ -1,8 +1,6 @@
 package myAdapter;
 
-import javax.imageio.plugins.tiff.ExifInteroperabilityTagSet;
-import java.util.List;
-import java.util.ListResourceBundle;
+
 import java.util.NoSuchElementException;
 
 public class ListAdapter implements HList, HCollection{
@@ -83,8 +81,7 @@ public class ListAdapter implements HList, HCollection{
     public Object[] toArray(Object[] arrayTarget) {
         if(arrayTarget == null) throw new NullPointerException();
         if(arrayTarget.length < size()){
-            Object[] toReturn = toArray();
-            return toReturn;
+            return toArray();
         }else{
             HListIterator iter = listIterator();
             int i = 0;
@@ -142,8 +139,8 @@ public class ListAdapter implements HList, HCollection{
     public boolean containsAll(HCollection coll) {
         if(coll == null) throw new NullPointerException();
         Object[] array = coll.toArray();
-        for(int i = 0; i < array.length; i++){
-            if(!contains(array[i])) return false;
+        for (Object o : array) {
+            if (!contains(o)) return false;
         }
         return true;
     }
@@ -231,8 +228,7 @@ public class ListAdapter implements HList, HCollection{
     @Override
     public Object get(int index) {
         if(index < 0 || index >= size()) throw new IndexOutOfBoundsException();
-        Object toReturn = list.elementAt(index + from);
-        return toReturn;
+        return list.elementAt(index + from);
     }
 
     @Override

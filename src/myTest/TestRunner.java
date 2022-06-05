@@ -12,7 +12,7 @@ import java.util.*;
  * Precondition: Object methods are considered in a working status when they are used
  *
  * @version JUnit 4.13
- * @version Harmcrest: 1.3
+ * @version Hamcrest: 1.3
  * @version JVM from JME CLDC 1.1
  *
  * @author Alessandro Marcassa
@@ -59,10 +59,8 @@ public class TestRunner {
         {
             System.out.println("failed " + res.getFailureCount() + " tests");
             List<Failure> fails = res.getFailures();
-            Iterator<Failure> iter = fails.iterator();
-            while(iter.hasNext())
-            {
-                System.out.println(iter.next().toString());
+            for (Failure fail : fails) {
+                System.out.println(fail.toString());
             }
         }
     }

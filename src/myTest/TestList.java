@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.*;
 
 //import java.util.NoSuchElementException;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
@@ -45,16 +44,16 @@ public class TestList
 
     @Test
     public void testIsEmpty(){
-        assertEquals(true, l1.isEmpty());
+        assertTrue(l1.isEmpty());
         l1.add(1);
-        assertEquals(false, l1.isEmpty());
+        assertFalse(l1.isEmpty());
     }
 
     @Test
     public void testContains(){
         l1.add(0);
-        assertEquals(true, l1.contains(0));
-        assertEquals(false, l1.contains(10));
+        assertTrue(l1.contains(0));
+        assertFalse(l1.contains(10));
     }
 
     @Test
@@ -108,9 +107,9 @@ public class TestList
         l2.add(0);
         l2.add(1);
         l2.add(2);
-        assertEquals(true, l1.containsAll(l2));
+        assertTrue(l1.containsAll(l2));
         l1.remove(2);
-        assertEquals(true, l2.containsAll(l1));
+        assertTrue(l2.containsAll(l1));
     }
 
     @Test
@@ -177,9 +176,7 @@ public class TestList
         l1.add(3);
         assertEquals(0, l1.get(0));
         assertEquals(3, l1.get(1));
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            l1.get(2);
-        });
+        assertThrows(IndexOutOfBoundsException.class, () -> l1.get(2));
     }
 
     @Test
@@ -197,9 +194,7 @@ public class TestList
         l1.add(2);
         l1.add(2, 3);
         assertEquals(3, l1.get(2));
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            l1.add(4, 5);
-        });
+        assertThrows(IndexOutOfBoundsException.class, () -> l1.add(4, 5));
     }
 
     @Test
@@ -208,9 +203,7 @@ public class TestList
         l1.add(3);
         assertEquals(0, l1.remove(0));
         assertEquals(3, l1.get(0));
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            l1.remove(1);
-        });
+        assertThrows(IndexOutOfBoundsException.class, () -> l1.remove(1));
     }
 
     @Test
@@ -237,9 +230,8 @@ public class TestList
     public void testBacking()
     {
         System.out.println("TestBacking");
-        for(int i=0;i<argv.length;i++)
-        {
-            l1.add(argv[i]);
+        for (String s : argv) {
+            l1.add(s);
         }
         System.out.println("List.toString() ? " + l1);
 
@@ -290,23 +282,20 @@ public class TestList
 
         assertEquals("List Starts not empty", l1.size(), 0);
         int prev = l1.size();
-        for(int i=0;i<argv.length;i++)
-        {
-            l1.add(argv[i]);
+        for (String s : argv) {
+            l1.add(s);
         }
         assertEquals("List add not working correctly", l1.size(), (prev + argv.length));
         System.out.println(l1.size());
         prev = l1.size();
-        for(int i=0;i<argv.length;i++)
-        {
-            l1.add(argv[i]);
+        for (String s : argv) {
+            l1.add(s);
         }
         assertEquals("List add not working correctly", l1.size(), (prev + argv.length));
         System.out.println(l1.size());
         prev = l1.size();
-        for(int i=0;i<argv.length;i++)
-        {
-            l1.add(argv[i]);
+        for (String s : argv) {
+            l1.add(s);
         }
         assertEquals("List add not working correctly", l1.size(), (prev + argv.length));
         System.out.println(l1.size());
@@ -334,9 +323,8 @@ public class TestList
         int dl0, dl1, dl2;
 
         dl0 = l1.size();
-        for(int i=0;i<argv.length;i++)
-        {
-            l1.add(argv[i]);
+        for (String s : argv) {
+            l1.add(s);
         }
         dl1 = l1.size();
         iterate(l1.iterator());
@@ -362,9 +350,8 @@ public class TestList
         System.out.println("TestListIterator #2");
         int dl0, dl1, dl2;
         dl0 = l1.size();
-        for(int i=0;i<argv.length;i++)
-        {
-            l1.add(argv[i]);
+        for (String s : argv) {
+            l1.add(s);
         }
         dl1 = l1.size();
         iterate(l1.iterator());
@@ -415,12 +402,12 @@ public class TestList
         l1.add(1);
         l1.add(2);
         HListIterator iterator = l1.listIterator();
-        assertEquals(true, iterator.hasNext());
+        assertTrue(iterator.hasNext());
         iterator.next();
-        assertEquals(true, iterator.hasNext());
+        assertTrue(iterator.hasNext());
         iterator.next();
         iterator.next();
-        assertEquals(false, iterator.hasNext());
+        assertFalse(iterator.hasNext());
     }
 
     @Test
@@ -434,9 +421,7 @@ public class TestList
         iter.previous();
         iter.next();
         assertEquals(2, iter.next());
-        assertThrows(NoSuchElementException.class, () -> {
-            iter.next();
-        });
+        assertThrows(NoSuchElementException.class, () -> iter.next());
     }
 
     @Test
@@ -445,14 +430,14 @@ public class TestList
         l1.add(1);
         l1.add(2);
         HListIterator iter = l1.listIterator();
-        assertEquals(false, iter.hasPrevious());
+        assertFalse(iter.hasPrevious());
         while (iter.hasNext()) iter.next();
-        assertEquals(true, iter.hasPrevious());
+        assertTrue(iter.hasPrevious());
         iter.previous();
         iter.previous();
-        assertEquals(true, iter.hasPrevious());
+        assertTrue(iter.hasPrevious());
         iter.previous();
-        assertEquals(false, iter.hasPrevious());
+        assertFalse(iter.hasPrevious());
     }
 
     @Test
@@ -461,14 +446,10 @@ public class TestList
         l1.add(1);
         l1.add(2);
         HListIterator iter = l1.listIterator();
-        assertThrows(NoSuchElementException.class, () -> {
-            iter.previous();
-        });
+        assertThrows(NoSuchElementException.class, () -> iter.previous());
         iter.next();
         assertEquals(0, iter.previous());
-        assertThrows(NoSuchElementException.class, () -> {
-            iter.previous();
-        });
+        assertThrows(NoSuchElementException.class, () -> iter.previous());
     }
 
     @Test
@@ -500,9 +481,7 @@ public class TestList
         l1.add(2);
         l1.add(4);
         HListIterator iter = l1.listIterator();
-        assertThrows(IllegalStateException.class, () -> {
-            iter.remove();
-        });
+        assertThrows(IllegalStateException.class, () -> iter.remove());
         iter.next();
         iter.remove();
         assertEquals(1, iter.next());
@@ -522,9 +501,7 @@ public class TestList
         l1.add(2);
         l1.add(4);
         HListIterator iter = l1.listIterator();
-        assertThrows(IllegalStateException.class, () -> {
-            iter.set(3);
-        });
+        assertThrows(IllegalStateException.class, () -> iter.set(3));
         iter.next();
         iter.set(3);
         assertEquals(3, l1.get(0));
@@ -550,9 +527,7 @@ public class TestList
         iter.add(0);
         iter.add(1);
         iter.add(3);
-        assertThrows(IllegalStateException.class, () -> {
-            iter.set(2);
-        });
+        assertThrows(IllegalStateException.class, () -> iter.set(2));
         iter.previous();
         iter.set(2);
         assertEquals(2, l1.get(iter.nextIndex()));
