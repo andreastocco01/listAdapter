@@ -34,6 +34,8 @@ public class TestRunner {
         esitoTest(res);
         res = JUnitCore.runClasses(ListTest.class);
         esitoTest(res);
+        res = JUnitCore.runClasses(TestBasaglia.class);
+        esitoTest(res);
 
         System.out.println("\n*** All the " + totalTests + " tests have been completed +**");
     }
