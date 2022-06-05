@@ -3,11 +3,35 @@ package myAdapter;
 
 import java.util.NoSuchElementException;
 
+/**
+ * This class allows to use classes which implement List interface (J2SE 1.4.2) in Java Micro Edition environment (CLDC 1.1).
+ * This adapter uses class Vector from CLDC 1.1 as adaptee for List from J2SE 1.4.2.
+ * <p>
+ * ListAdapter implements HList and HCollection interfaces which have all methods of List and Collection interfaces from J2SE 1.4.2
+ * environment. The interfaces have been renamed to avoid collision with current version of List and Collection.
+ * <p>
+ * This class provides add, insert, remove and inspect operations.
+ * ListAdapter allows duplicate elements, and it doesn't give any restriction on the type of the element that will be inserted (null is a valid value).
+ * <p>
+ * ListAdapter also manages sublists. In this case when a sublist has a structural change the father list has the same change.
+ * <p>
+ * ListAdapter provides ListIterator which will be described before the declaration of ListIterator subclass.
+ *
+ * @see myAdapter.HList
+ * @see myAdapter.HCollection
+ * @author Andrea Stocco
+ */
 public class ListAdapter implements HList, HCollection{
-    private int from, to;
-    private Vector list;
-    private ListAdapter father;
 
+    private final int from;
+    private int to;
+    private final Vector list;
+    private final ListAdapter father;
+
+    /**
+     * Void Constructor (no arguments).
+     * Creates an empty ListAdapter.
+     */
     public ListAdapter() {
         from = 0;
         to = 0;
@@ -15,6 +39,17 @@ public class ListAdapter implements HList, HCollection{
         father = null;
     }
 
+    /**
+     * Private constructor. It creates a new listAdapter based on his ancestor.
+     * It is invoked only by subList method.
+     * <p>
+     * Example: {@code
+     * ListAdapter subList = list.subList(0, list.size() - 1);
+     * }
+     * @param from starting index of the sublist
+     * @param to final index of the sublist
+     * @param listAdapter reference of father list
+     */
     private ListAdapter(int from, int to, ListAdapter listAdapter){
         this.from = from;
         this.to = to;
@@ -22,6 +57,10 @@ public class ListAdapter implements HList, HCollection{
         this.father = listAdapter;
     }
 
+    /**
+     * Constructor which creates a new ListAdapter with the same elements as its argument
+     * @param coll collection from which to take elements
+     */
     public ListAdapter(HCollection coll){
         this();
         HIterator iter = coll.iterator();
@@ -71,12 +110,6 @@ public class ListAdapter implements HList, HCollection{
         return toReturn;
     }
 
-    /**
-     *
-     * la lista puo' contenere valori null.
-     * se arrayTarget ha dimensioni maggiori della lista, le posizioni non riempite vengono settate a null.
-     * questo puo' creare confusione
-     */
     @Override
     public Object[] toArray(Object[] arrayTarget) {
         if(arrayTarget == null) throw new NullPointerException();
@@ -96,17 +129,17 @@ public class ListAdapter implements HList, HCollection{
         }
     }
 
+    /**
+     * Recursive method for updating the value of "to" as a consequence of any structural change in the sublist.
+     * <p>
+     * All ancestors of the current sublist must update their size following a structural change.
+     * @param n can be +1 (there was an insertion) or -1 (there was a removal)
+     */
     private void refreshIndexes(int n){
         to += n;
         if(father != null) father.refreshIndexes(n);
     }
 
-    /**
-     *
-     * ritorna true se obj viene aggiunto in coda alla lista.
-     * la lista puo' contenere duplicati e non ci sono limitazioni sui tipi (anche il tipo null e' concesso).
-     * questo metodo, quindi, non fallirà mai.
-     */
     @Override
     public boolean add(Object obj) {
         add(to, obj);
@@ -287,14 +320,33 @@ public class ListAdapter implements HList, HCollection{
         return new ListAdapter(fromIndex + from, toIndex + from, this);
     }
 
+    /**
+     * ListIterator allows the programmer to traverse the ListAdapter in either direction.
+     * <p>
+     * It allows to modify the ListAdapter (insert, remove, replace).
+     * <p>
+     * It doesn't have a current element. Like ListIterator its position lies between an element and its predecessor.
+     * @see myAdapter.HIterator
+     * @see myAdapter.HListIterator
+     * @author Andrea Stocco
+     */
     private class ListIterator implements HIterator, HListIterator{
         private int previous, next;
         private int lastCall; // 0: invalid, 1: next, -1: previous
 
+        /**
+         * Void constructor (no arguments). It creates a new listIterator on the start position of a listAdapter
+         */
         public ListIterator(){
             this(0);
         }
 
+        /**
+         * It creates a new listIterator on the position specified by index.
+         * <p>
+         * A call to next() will return the element at index position
+         * @param index where to place the new listIterator
+         */
         public ListIterator(int index){
             if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
             this.next = index + from;
