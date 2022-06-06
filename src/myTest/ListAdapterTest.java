@@ -195,6 +195,16 @@ public class ListAdapterTest
         assertEquals("Milan", teamList.get(0));
     }
 
+    /**
+     * Method for checking the correct removal of an element (specified by his value)
+     * <br><br>
+     * Design test: an element is removed, then is checked the correct position of the previous and next element.
+     * Another element is removed, then is checked if the entire list matches the expected result
+     * <br><br>
+     * Preconditions: remove(), get() and toArray() method must work correctly.
+     * <br><br>
+     * Postconditions: the list has to contain the remaining elements in the correct order
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testRemoveObject(){
