@@ -15,19 +15,21 @@ import static org.junit.Assert.assertEquals;
 /**
  * This class tests the functionality of all the ListAdapter methods.
  * It checks the correct behaviour of all the ListIterator methods.
- * <p>
+ * <br><br>
  * The first test cases in this class simply test all the ListAdapter and ListIterator's methods. The subsequent test cases
  * are more complex because they test more functionalities at once. They are real simulations of the use of the ListAdapter class.
- * <p>
+ * <br><br>
  * Every test case is based on the string array "teams" which contains some important European football clubs.
  * Before each test case, there is a reminder comment to the state of the listAdapter before the execution of that test.
- * <p>
+ * <br><br>
  * Every execution variable is never in an uninitialized state (i.e. teamList = null).
  * Before each test case, a new empty listAdapter must be instantiated. A new listAdapter, which contains the elements of the
  * array "teams", must be instantiated, together with a listIterator pointing the first element of that list.
- * <p>
+ * <br><br>
  * A test case is correct if all the tests that verify the correct functioning give a positive result.
- * <p>
+ * <br><br>
+ * To execute each test case of this class, simply run TestRunner class.
+ * <br><br>
  * Execution variable:
  * HList teamList - main listAdapter on which all the methods are tested.
  * HList emptyList - empty listAdapter which is used to test teamList. In the majority of the tests, the emptyList is filled with test values.
@@ -43,6 +45,13 @@ public class ListAdapterTest
     HListIterator iter;
     static String[] teams = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"};
 
+    /**
+     * Method for initializing the execution variables.
+     * An empty listAdapter, another one which contains "teams" elements and a listIterator attached to this one are created.
+     * In this way every method that is invoked always has a valid state.
+     * <br><br>
+     * Preconditions: the constructors have to correctly initialize the execution variables
+     */
     @Before
     public void setup()
     {
@@ -54,6 +63,16 @@ public class ListAdapterTest
         }
     }
 
+    /**
+     * Method for checking the correct size of teamList and emptyList.
+     * <br><br>
+     * Design test: test of the size of the listAdapter before and after adding and removing an element.
+     * emptyList doesn't have changes, so size() must return 0.
+     * <br><br>
+     * Preconditions: the add() and remove() method must work in the right way
+     * <br><br>
+     * Postconditions: the returned value of size() method must correspond to the number of elements inside the listAdapter
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testSize(){
@@ -65,6 +84,18 @@ public class ListAdapterTest
         assertEquals(0, emptyList.size());
     }
 
+    /**
+     * Method for checking if a listAdapter is empty.
+     * <br><br>
+     * Design test: teamList is emptied and isEmpty() is invoked. An element is added and isEmpty is invoked another time.
+     * emptyList doesn't have changes, so isEmpty() must return true.
+     * <br><br>
+     * Preconditions: clear() and add() methods must work correctly
+     * <br><br>
+     * Postconditions: isEmpty must return true if the collection is empty, false otherwise
+     * <br><br>
+     * Expected result: true after the removal of all elements, false after the insert.
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testIsEmpty(){
@@ -75,6 +106,18 @@ public class ListAdapterTest
         assertTrue(emptyList.isEmpty());
     }
 
+    /**
+     * Method for checking if teamList contains a specific element.
+     * <br><br>
+     * Design test: an element is added to teamList. Checking if that element is present inside the list. Checking if an element
+     * that wasn't added isn't inside the list.
+     * <br><br>
+     * Preconditions: add() method must work correctly.
+     * <br><br>
+     * Postcoditions: contains() must return true if the parameter is inside the list, false otherwise.
+     * <br><br>
+     * Expected result: true when is searched the element that was added, false when is searched the element that isn't present in the list.
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testContains(){
@@ -83,6 +126,18 @@ public class ListAdapterTest
         assertFalse(teamList.contains("Juventus"));
     }
 
+    /**
+     * Method for checking the convertion from listAdapter to array of Object.
+     * <br><br>
+     * Design test: teamList is converted to array. Then two elements are added and the list is converted again.
+     * <br><br>
+     * Preconditions: add() method must work correctly.
+     * <br><br>
+     * Postconditions: the returned array has to contain the same elements of teamList and emptyList
+     * <br><br>
+     * Execution result: toArray() called on teamList must return an array with the same elements of the list even after the addition of an element.
+     * toArray() called on emptyList must return an empty array.
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testToArray(){
@@ -94,6 +149,20 @@ public class ListAdapterTest
         assertArrayEquals(new Object[]{}, emptyList.toArray());
     }
 
+    /**
+     * Method for checking the correct copy of the elements of listAdapter into a specified array.
+     * toArray(target) have to return a fitted array to the list if target's size is smaller or equal than listAdapter's size.
+     * If target's size in greater than listAdapter's size, toArray(target) must return an array with null elements at the end.
+     * <br><br>
+     * Design test: toArray(target) is executed before with a target with the same size of teamList. Then is executed with a target with
+     * a different size.
+     * <br><br>
+     * Preconditions: size() must work correctly
+     * Postconditions: the returned array has to contain teamList's elements in addition of null element if target's size is greater
+     * than teamList's size.
+     * <br><br>
+     * Execution result: returned array has to be fitted in the first and last case and has to contain null elements in the second case.
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testToArrayWithTarget(){

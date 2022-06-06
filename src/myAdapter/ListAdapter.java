@@ -6,15 +6,15 @@ import java.util.NoSuchElementException;
 /**
  * This class allows to use classes which implement List interface (J2SE 1.4.2) in Java Micro Edition environment (CLDC 1.1).
  * This adapter uses class Vector from CLDC 1.1 as adaptee for List from J2SE 1.4.2.
- * <p>
+ * <br><br>
  * ListAdapter implements HList and HCollection interfaces which have all the methods of List and Collection interfaces from J2SE 1.4.2
  * environment. The interfaces have been renamed to avoid collision with current version of List and Collection.
- * <p>
+ * <br><br>
  * This class provides add, insert, remove and inspect operations.
  * ListAdapter allows to duplicate elements, and it doesn't give any restriction on the type of the element that will be inserted (null is a valid value).
- * <p>
+ * <br><br>
  * ListAdapter also manages sublists. In this case when a sublist has a structural change the father list has the same change.
- * <p>
+ * <br><br>
  * ListAdapter provides ListIterator which will be described before the declaration of ListIterator subclass.
  *
  * @see myAdapter.HList
@@ -42,7 +42,7 @@ public class ListAdapter implements HList, HCollection{
     /**
      * Private constructor. It creates a new listAdapter based on his ancestor.
      * It is invoked only by subList method.
-     * <p>
+     * <br><br>
      * Example: {@code
      * ListAdapter subList = list.subList(0, list.size() - 1);
      * }
@@ -131,7 +131,7 @@ public class ListAdapter implements HList, HCollection{
 
     /**
      * Recursive method for updating the value of "to" as a consequence of any structural change in the sublist.
-     * <p>
+     * <br><br>
      * All ancestors of the current sublist must update their size following a structural change.
      * @param n can be +1 (there was an insertion) or -1 (there was a removal)
      */
@@ -231,12 +231,6 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public void clear() {
-        /*
-        while(size() > 0){
-            remove(0);
-        }
-
-         */
         retainAll(new ListAdapter());
     }
 
@@ -326,9 +320,9 @@ public class ListAdapter implements HList, HCollection{
 
     /**
      * ListIterator allows the programmer to traverse the ListAdapter in either direction.
-     * <p>
+     * <br><br>
      * It allows to modify the ListAdapter (insert, remove, replace).
-     * <p>
+     * <br><br>
      * It doesn't have a current element. Like ListIterator its position lies between an element and its predecessor.
      * @see myAdapter.HIterator
      * @see myAdapter.HListIterator
@@ -347,7 +341,7 @@ public class ListAdapter implements HList, HCollection{
 
         /**
          * It creates a new listIterator on the position specified by index.
-         * <p>
+         * <br><br>
          * A call to next() will return the element at index position
          * @param index where to place the new listIterator
          */
