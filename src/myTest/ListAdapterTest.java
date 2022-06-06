@@ -174,6 +174,16 @@ public class ListAdapterTest
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}, teamList.toArray(target));
     }
 
+    /**
+     * Method for checking the correct addition of the elements to the listAdapter
+     * <br><br>
+     * Design test: two elements are added at the end of teamList. Checking if the last element is correct, then the last element is removed
+     * and is checked again if the last element is correct
+     * <br><br>
+     * Preconditions: remove() and size() method must work correctly.
+     * <br><br>
+     * Postcoditions: the last element of the list has to be the last element added
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testAdd(){
