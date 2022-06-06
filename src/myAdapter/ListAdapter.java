@@ -231,9 +231,13 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public void clear() {
+        /*
         while(size() > 0){
             remove(0);
         }
+
+         */
+        retainAll(new ListAdapter());
     }
 
     @Override
