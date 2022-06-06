@@ -13,24 +13,24 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
- * This class tests the functionality of all ListAdapter methods.
- * It checks the correct behaviour of all ListIterator methods.
+ * This class tests the functionality of all the ListAdapter methods.
+ * It checks the correct behaviour of all the ListIterator methods.
  * <p>
- * The first test cases in this class simply test all methods of ListAdapter and ListIterator. The subsequent test cases
- * are more complex because they test more functionality at once. They are real simulations of the use of the ListAdapter class.
+ * The first test cases in this class simply test all the ListAdapter and ListIterator's methods. The subsequent test cases
+ * are more complex because they test more functionalities at once. They are real simulations of the use of the ListAdapter class.
  * <p>
- * All test cases are based on the string array "teams" which contains some important european football club.
- * Before each test case there is a reminder comment to the state of the listAdapter before the execution of that test.
+ * Every test case is based on the string array "teams" which contains some important European football clubs.
+ * Before each test case, there is a reminder comment to the state of the listAdapter before the execution of that test.
  * <p>
- * All execution variables are never in an uninitialized state (i.e. teamList = null)
- * Before each test case a new empty listAdapter must be instantiated. A new listAdapter which contains the elements of the
- * array "teams" must be instantiated and a listIterator pointing the first element of that list.
+ * Every execution variable is never in an uninitialized state (i.e. teamList = null).
+ * Before each test case, a new empty listAdapter must be instantiated. A new listAdapter, which contains the elements of the
+ * array "teams", must be instantiated, together with a listIterator pointing the first element of that list.
  * <p>
- * A test case is correct if all the tests that verify the correct functioning give positive result.
+ * A test case is correct if all the tests that verify the correct functioning give a positive result.
  * <p>
  * Execution variable:
- * HList teamList - main listAdapter on which al methods are tested.
- * HList emptyList - empty listAdapter which is used to test teamList. In most tests this is filled with test values.
+ * HList teamList - main listAdapter on which all the methods are tested.
+ * HList emptyList - empty listAdapter which is used to test teamList. In the majority of the tests, the emptyList is filled with test values.
  * HListIterator iter - listIterator attached to teamList.
  * String [] teams - array which contains the elements for initializing teamList.
  *
