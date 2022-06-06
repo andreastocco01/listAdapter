@@ -7,11 +7,11 @@ import java.util.NoSuchElementException;
  * This class allows to use classes which implement List interface (J2SE 1.4.2) in Java Micro Edition environment (CLDC 1.1).
  * This adapter uses class Vector from CLDC 1.1 as adaptee for List from J2SE 1.4.2.
  * <p>
- * ListAdapter implements HList and HCollection interfaces which have all methods of List and Collection interfaces from J2SE 1.4.2
+ * ListAdapter implements HList and HCollection interfaces which have all the methods of List and Collection interfaces from J2SE 1.4.2
  * environment. The interfaces have been renamed to avoid collision with current version of List and Collection.
  * <p>
  * This class provides add, insert, remove and inspect operations.
- * ListAdapter allows duplicate elements, and it doesn't give any restriction on the type of the element that will be inserted (null is a valid value).
+ * ListAdapter allows to duplicate elements, and it doesn't give any restriction on the type of the element that will be inserted (null is a valid value).
  * <p>
  * ListAdapter also manages sublists. In this case when a sublist has a structural change the father list has the same change.
  * <p>
