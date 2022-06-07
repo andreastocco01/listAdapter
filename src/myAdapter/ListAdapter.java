@@ -250,10 +250,12 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public int hashCode(){
-        ListAdapter sub = new ListAdapter();
-        HListIterator iter = listIterator();
-        while(iter.hasNext()) sub.add(iter.next());
-        return sub.list.hashCode();
+        int hash = 7;
+        hash = 31 * hash + from;
+        hash = 31 * hash + to;
+        hash = 31 * hash + (list == null ? 0 : list.hashCode());
+        hash = 31 * hash + (father == null ? 0 : father.hashCode());
+        return hash;
     }
 
     @Override
