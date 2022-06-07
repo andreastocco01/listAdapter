@@ -155,7 +155,7 @@ public class ListAdapterTest
      * If target's size in greater than listAdapter's size, toArray(target) must return an array with null elements at the end.
      * <br><br>
      * Design test: toArray(target) is executed before with a target with the same size of teamList. Then is executed with a target with
-     * a different size.
+     * a different size. After that, this method is executed with a null parameter.
      * <br><br>
      * Preconditions: size() must work correctly
      * <br><br>
@@ -163,6 +163,7 @@ public class ListAdapterTest
      * than teamList's size.
      * <br><br>
      * Execution result: returned array has to be fitted in the first and last case and has to contain null elements in the second case.
+     * toArray() has to throw an exception in the last case.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -173,6 +174,7 @@ public class ListAdapterTest
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax", null, null}, teamList.toArray(target));
         target = new Object[0];
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}, teamList.toArray(target));
+        assertThrows(NullPointerException.class, () -> teamList.toArray(null));
     }
 
     /**
@@ -223,6 +225,7 @@ public class ListAdapterTest
      * <br><br>
      * Design case: check if teamList contains an empty collection. add to the empty collection some elements which are contained in teamList
      * and check again if teamList contains this new collection. An element in emptyList is changed, then containsAll() is called again.
+     * Then containsAll() is called with an invalid parameter.
      * <br><br>
      * Preconditions: add() and set() method must work correctly
      * <br><br>
@@ -230,6 +233,7 @@ public class ListAdapterTest
      * <br><br>
      * Execution result: teamList must contain the emptyList. When elements are added to emptyList containsAll() has to return true again.
      * When another element is added to emptyList and then this element is changed, teamList mustn't contain the emptyList.
+     * When the parameter is null, this method has to throw a NullPointerException.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -243,18 +247,21 @@ public class ListAdapterTest
         assertTrue(teamList.containsAll(emptyList));
         emptyList.set(0, "Inter");
         assertFalse(teamList.containsAll(emptyList));
+        assertThrows(NullPointerException.class, () -> teamList.containsAll(null));
     }
 
     /**
      * Method for checking if listAdapter add at the end all element of a specified collection
      * <br><br>
-     * Design test: some elements are added to emptyList. teamList has to add all of emptyList's elements
+     * Design test: some elements are added to emptyList. teamList has to add all of emptyList's elements. addAll() has to throw an exception
+     * if the parameter is null.
      * <br><br>
      * Preconditions: add() and toArray() must work correctly.
      * <br><br>
      * Postconditions: emptyList's elements have to been added to teamList.
      * <br><br>
      * Execution result: after the addition of the collection, teamList has to have its previous elements plus emptyList's elements.
+     * A NullPointerException has to be thrown when trying to add a null collection.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -264,17 +271,20 @@ public class ListAdapterTest
         teamList.addAll(emptyList);
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax", "Chelsea", "Benfica"},
                 teamList.toArray());
+        assertThrows(NullPointerException.class, () -> teamList.addAll(null));
     }
 
     /**
      * Method for checking if listAdapter inserts correctly all the elements of a specified collection
      * <br><br>
      * Design test: some elements are added to emptyList, then emptyList is inserted at position 1 in teamList.
-     * emptyList is changed and is inserted again in the position size() -1.
+     * emptyList is changed and is inserted again in the position size() -1. The collection is tried to add in a position which is
+     * out of bounds. A null collection is tried to add in teamList.
      * <br><br>
      * Preconditions: add(), remove() and toArray() must work correctly.
      * <br><br>
-     * Postconditions and Expected resul: all the elements of emptyList has to be added in the correct position of teamList
+     * Postconditions and Expected resul: all the elements of emptyList has to be added in the correct position of teamList. An exception is
+     * thrown in the last two case.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -290,24 +300,27 @@ public class ListAdapterTest
         teamList.addAll(teamList.size() - 1, emptyList);
         assertArrayEquals(new Object[]{"Milan", "Chelsea", "Benfica", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Porto", "Ajax"},
                 teamList.toArray());
+        assertThrows(IndexOutOfBoundsException.class, () -> teamList.addAll(teamList.size() + 1, emptyList));
+        assertThrows(NullPointerException.class, () -> teamList.addAll(0, null));
     }
 
     /**
      * Method for checking the removal of all the element inside a specified collection
      * <br><br>
-     * Design case: some elements which aren't inside teamList are added to emptyList. Then removeAll() is called.
+     * Design case: removeAll() is tried to call with an invalid parameter. Some elements which aren't inside teamList are added to emptyList. Then removeAll() is called.
      * emptyList is modified with elements which are inside teamList and removeAll() is called again.
      * <br><br>
      * Preconditions: add() and toArray must work correctly.
      * <br><br>
      * Postconditions: the emptyList's elements have to be removed from teamList
      * <br><br>
-     * Execution result: teamList has to be the same after the first call of removeAll(). In the second case the elements inside emptyList have to
+     * Execution result: in the first case, an exception must be thrown. teamList has to be the same after the first call of removeAll(). In the second case the elements inside emptyList have to
      * been removed.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testRemoveAll(){
+        assertThrows(NullPointerException.class, () -> teamList.removeAll(null));
         emptyList.add("Chelsea");
         emptyList.add("Benfica");
         teamList.removeAll(emptyList);
@@ -321,15 +334,17 @@ public class ListAdapterTest
     /**
      * Method for testing the removal of each element which aren't contained in the specified collection
      * <br><br>
-     * Design test: some elements are added to emptyList, then retainAll() is called on teamList.
+     * Design test: retainAll() is called with an invalid parameter. Some elements are added to emptyList, then retainAll() is called on teamList.
      * <br><br>
      * Preconditions: add() and toArray() must work correctly
      * <br><br>
-     * Postconditions and Execution result: after the call of retainAll(), teamList must contain only the elements which are inside emptyList
+     * Postconditions and Execution result: In the first case, the method must throw an exception. In the second case
+     * after the call of retainAll(), teamList must contain only the elements which are inside emptyList
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testRetainAll(){
+        assertThrows(NullPointerException.class, () -> teamList.retainAll(null));
         emptyList.add("Milan");
         emptyList.add("Real Madrid");
         emptyList.add("Chelsea");
@@ -398,6 +413,18 @@ public class ListAdapterTest
         assertEquals("Liverpool", teamList.get(2));
     }
 
+    /**
+     * Method for checking if set() modify the correct element of listAdapter
+     * <br><br>
+     * Design case: change the value of an element inside the list, then check if the modification of that element was
+     * successful. Then set() is called on an element outside the listAdapter.
+     * <br><br>
+     * Preconditions: get() and size() must work correctly.
+     * <br><br>
+     * Postconditions: method set() has to modify the correct element if it is allowed.
+     * <br><br>
+     * Execution result: the first call of set() must be successful. the last call must throw an IndexOutOfBoundsException
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testSet(){
@@ -406,6 +433,21 @@ public class ListAdapterTest
         assertThrows(IndexOutOfBoundsException.class, () -> teamList.set(teamList.size(), "Juventus"));
     }
 
+    /**
+     * Method for testing if the addition of an element in every position of the listAdapter works correctly
+     * <br><br>
+     * Design test: an element is inserted inside teamList.
+     * Then try to add an element in a position out from teamList. After that an element is added at the end of teamList.
+     * <br><br>
+     * Preconditions: get() and toArray() must work correctly.
+     * <br><br>
+     * Postconditions: the attempt to add elements out of bounds must throw an exception. The addition of elements inside the listAdapter
+     * must be successful.
+     * <br><br>
+     * Execution result: after the insertion of the first element, a call to get() method must return the element just added.
+     * toArray() method has to return the expected array. When trying to add an element out of bounds, an exception has to be thrown.
+     * When an element is added at the end of teamList, this method mustn't throw an exception.
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testAddWithIndex(){
@@ -419,6 +461,19 @@ public class ListAdapterTest
                 teamList.toArray());
     }
 
+    /**
+     * Method for checking if an element is removed from the listAdapter (specified by his index)
+     * <br><br>
+     * Design case: an element is removed from teamList, then the element in that position has to be the element following the one removed.
+     * remove() method is called in a position which isn't inside teamList.
+     * <br><br>
+     * Preconditions: get(), size() and toArray must work correctly.
+     * <br><br>
+     * Postconditions: teamList has to be like the expected array.
+     * <br><br>
+     * Execution result: the first remove() call must be successful. The second call has to throw an IndexOutOfBoundException.
+     * toArray() has to return the expected array.
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testRemoveWithIndex(){
