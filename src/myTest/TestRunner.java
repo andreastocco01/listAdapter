@@ -27,17 +27,14 @@ public class TestRunner {
     public static void main(String[] args) {
         Result res;
 
-        System.out.println("**Test in execution..**\n");
-
-        System.out.println("\nTest of ListAdapter..");
+        System.out.println("*** Tests in execution... ***");
+        System.out.println();
         res = JUnitCore.runClasses(ListAdapterTest.class);
         esitoTest(res);
         /*res = JUnitCore.runClasses(ListTest.class);
         esitoTest(res);
         res = JUnitCore.runClasses(TestBasaglia.class);
         esitoTest(res);*/
-
-        System.out.println("\n*** All the " + totalTests + " tests have been completed +**");
     }
 
     /**
@@ -50,14 +47,10 @@ public class TestRunner {
     private static void esitoTest(Result res)
     {
         totalTests += res.getRunCount();
-        System.out.print("Of " + res.getRunCount() + " tests ");
-        if (res.wasSuccessful())
-        {
-            System.out.println("all are with a positive result");
-        }
-        else
-        {
-            System.out.println("failed " + res.getFailureCount() + " tests");
+        System.out.println();
+        System.out.println("*** All the tests have been completed ***");
+        System.out.println(totalTests - res.getFailureCount() + "/" + totalTests + " successful, " + res.getFailureCount() + "/" + totalTests + " failed");
+        if (!res.wasSuccessful()) {
             List<Failure> fails = res.getFailures();
             for (Failure fail : fails) {
                 System.out.println(fail.toString());
