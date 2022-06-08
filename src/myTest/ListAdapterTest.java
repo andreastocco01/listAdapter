@@ -64,6 +64,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#size()}
+     * <br><br>
      * Method for checking the correct size of listAdapter.
      * <br><br>
      * Design test: test of the size of the teamList before and after adding and removing an element.
@@ -85,6 +87,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#isEmpty()}
+     * <br><br>
      * Method for checking if a listAdapter is empty.
      * <br><br>
      * Design test: teamList is emptied and isEmpty() is invoked. An element is added and isEmpty is invoked again.
@@ -107,6 +111,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#contains(Object)}
+     * <br><br>
      * Method for checking if listAdapter contains a specific element.
      * <br><br>
      * Design test: an element is added to teamList. Check if that element is present inside the list. Check if an element
@@ -127,6 +133,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#toArray()}
+     * <br><br>
      * Method for checking the conversion from listAdapter to array of Object.
      * <br><br>
      * Design test: teamList is converted to array. Then two elements are added and the list is converted again.
@@ -150,6 +158,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#toArray(Object[])}
+     * <br><br>
      * Method for checking the correct copying of the elements of listAdapter into a specified array.
      * toArray(target) must return an array fitted to the list if target size is smaller or equal than listAdapter size.
      * If target size is greater than listAdapter's size, toArray(target) must return an array with null elements at the end.
@@ -179,6 +189,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#add(Object)}
+     * <br><br>
      * Method for checking the correct addition of the elements to the listAdapter
      * <br><br>
      * Design test: two elements are added at the end of teamList. Check if the last element is correct, then the last element is removed
@@ -200,6 +212,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#remove(Object)}
+     * <br><br>
      * Method for checking the correct removal of an element (specified by his value)
      * <br><br>
      * Design test: A null element is added then removed. An element is removed, then is checked the correct position of the previous and next element.
@@ -225,6 +239,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#containsAll(HCollection)}
+     * <br><br>
      * Method for checking if listAdapter contains an entire collection, which is passed by parameter
      * <br><br>
      * Design case: check if teamList contains an empty collection. add to the empty collection some elements which are contained in teamList
@@ -255,6 +271,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#addAll(HCollection)}
+     * <br><br>
      * Method for checking if listAdapter add at the end all element of a specified collection
      * <br><br>
      * Design test: some elements are added to emptyList. teamList has to add all of emptyList's elements. addAll() has to throw an exception
@@ -279,6 +297,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#addAll(int, HCollection)}
+     * <br><br>
      * Method for checking if listAdapter inserts correctly all the elements of a specified collection
      * <br><br>
      * Design test: some elements are added to emptyList, then emptyList is inserted at position 1 in teamList.
@@ -309,6 +329,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#removeAll(HCollection)}
+     * <br><br>
      * Method for checking the removal of all the element inside a specified collection
      * <br><br>
      * Design case: removeAll() is tried to call with an invalid parameter. Some elements which aren't inside teamList are added to emptyList. Then removeAll() is called.
@@ -336,6 +358,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#retainAll(HCollection)}
+     * <br><br>
      * Method for testing the removal of every element that isn't contained in the specified collection
      * <br><br>
      * Design test: retainAll() is called with an invalid parameter. Some elements are added to emptyList then retainAll() is called on teamList.
@@ -357,6 +381,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#clear()}
+     * <br><br>
      * Method for checking the emptying of a listAdapter.
      * <br><br>
      * Design method: teamList is emptied, then the size of the list has to be 0.
@@ -375,6 +401,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#equals(Object)}
+     * <br><br>
      * Method for checking if two instances of listAdapter contain the same elements
      * <br><br>
      * Design case: a new listAdapter is created by copying all the elements of teamList. Then an element is remove from that list.
@@ -395,14 +423,16 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#hashCode()}
+     * <br><br>
      * Method for testing if different instances of listAdapter have the same hashCode.
      * <br><br>
-     * Design test: newList is filled with all the elements of teamList. Are added to emptyList every element of teamList
+     * Design test: newList is created with the elements of teamList. Are added to emptyList every element of teamList
      * (two elements are swapped). newList is emptied. emptyList is emptied then is filled with all the elements of teamList.
      * <br><br>
      * Preconditions: constructor(parameter), add(), clear() and addAll() must work correctly.
      * <br><br>
-     * Postconditions and Execution result: hashCode must return true in first and last case, false otherwise.
+     * Postconditions and Execution result: hashCode must be the same in first and last case, different otherwise.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -424,6 +454,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#get(int)}
+     * <br><br>
      * Method for checking if get() method returns the correct element inside the listAdapter.
      * <br><br>
      * Design test: two elements inside teamList are inspected. Then an index which isn't inside teamList is inspected.
@@ -448,6 +480,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#set(int, Object)}
+     * <br><br>
      * Method for checking if set() modify the correct element of listAdapter
      * <br><br>
      * Design case: change the value of an element inside the list, then check if the modification of that element was
@@ -468,6 +502,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#add(int, Object)}
+     * <br><br>
      * Method for testing if the addition of an element in every position of the listAdapter works correctly
      * <br><br>
      * Design test: an element is inserted inside teamList.
@@ -496,6 +532,8 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#remove(int)}
+     * <br><br>
      * Method for checking if an element is removed from the listAdapter (specified by his index)
      * <br><br>
      * Design case: an element is removed from teamList, then the element in that position has to be the element following the one removed.
@@ -518,6 +556,18 @@ public class ListAdapterTest
                 teamList.toArray());
     }
 
+    /**
+     * Test of {@link ListAdapter#indexOf(Object)}
+     * <br><br>
+     * Method for checking if is returned the correct index of a specified element
+     * <br><br>
+     * Design case: first is requested the index of an element inside teamList. Then an element is modified and is requested the index
+     * of the first occurrence of that element. After that is requested the index of an element which isn't inside teamList.
+     * <br><br>
+     * Precondition: set() method must work correctly
+     * Postconditions: indexOf() must return the first occurrence of the specified element
+     * Executing result: equality must be verified in all cases
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testIndexOf(){
@@ -527,6 +577,17 @@ public class ListAdapterTest
         assertEquals(-1, teamList.indexOf(null));
     }
 
+    /**
+     * Test of {@link ListAdapter#indexOf(Object)}
+     * <br><br>
+     * Design case: two elements already present inside teamList are added to the list. in first and second cases
+     * is required the index of the last occurrence of a specified element. In the last case is requested the index of
+     * an element which isn't inside the list.
+     * <br><br>
+     * Preconditions: add() method must work correctly.
+     * Postconditions: lastIndexOf() must return the last occurrence of the specified element
+     * Execution result: equality must be verified in all cases
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testLastIndexOf(){

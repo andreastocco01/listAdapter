@@ -23,9 +23,24 @@ import java.util.NoSuchElementException;
  */
 public class ListAdapter implements HList, HCollection{
 
+    /**
+     * Variable identifying the first valid index for a sublist. If the list isn't a sublist
+     * this variable is set to 0.
+     */
     private final int from;
+    /**
+     * Variable identifying the last index (exclusive) of a sublist. If the list isn't a sublist
+     * this variable is set to size().
+     */
     private int to;
+    /**
+     * Vector which contains the element of the list
+     */
     private final Vector list;
+    /**
+     * Reference to the father list of a sublist. If the list isn't a sublist
+     * this variable is set to null.
+     */
     private final ListAdapter father;
 
     /**
