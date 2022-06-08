@@ -32,10 +32,10 @@ public class TestRunner {
         System.out.println("\nTest of ListAdapter..");
         res = JUnitCore.runClasses(ListAdapterTest.class);
         esitoTest(res);
-        res = JUnitCore.runClasses(ListTest.class);
+        /*res = JUnitCore.runClasses(ListTest.class);
         esitoTest(res);
         res = JUnitCore.runClasses(TestBasaglia.class);
-        esitoTest(res);
+        esitoTest(res);*/
 
         System.out.println("\n*** All the " + totalTests + " tests have been completed +**");
     }

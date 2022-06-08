@@ -121,8 +121,8 @@ public class ListAdapterTest
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testContains(){
-        teamList.add("Barcelona");
-        assertTrue(teamList.contains("Barcelona"));
+        teamList.add(null);
+        assertTrue(teamList.contains(null));
         assertFalse(teamList.contains("Juventus"));
     }
 
@@ -150,19 +150,20 @@ public class ListAdapterTest
     }
 
     /**
-     * Method for checking the correct copy of the elements of listAdapter into a specified array.
-     * toArray(target) have to return a fitted array to the list if target's size is smaller or equal than listAdapter's size.
-     * If target's size in greater than listAdapter's size, toArray(target) must return an array with null elements at the end.
+     * Method for checking the correct copying of the elements of listAdapter into a specified array.
+     * toArray(target) must return an array fitted to the list if target size is smaller or equal than listAdapter size.
+     * If target size is greater than listAdapter's size, toArray(target) must return an array with null elements at the end.
      * <br><br>
-     * Design test: toArray(target) is executed before with a target with the same size of teamList. Then is executed with a target with
+     * Design test: first toArray(target) is executed with a target with the same size of teamList. Then it is executed with a target with
      * a different size. After that, this method is executed with a null parameter.
      * <br><br>
      * Preconditions: size() must work correctly
      * <br><br>
-     * Postconditions: the returned array has to contain teamList's elements in addition of null element if target's size is greater
+     * Postconditions: the returned array has to contain teamList's elements in addition to null element if target's size is greater
      * than teamList's size.
      * <br><br>
-     * Execution result: returned array has to be fitted in the first and last case and has to contain null elements in the second case.
+     * Execution result: in the first and the third case the returned array contains only the elements of the list. In the second case the returned
+     * array contains the elements of the list plus nulls filling the remaining space.
      * toArray() has to throw an exception in the last case.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
@@ -201,7 +202,7 @@ public class ListAdapterTest
     /**
      * Method for checking the correct removal of an element (specified by his value)
      * <br><br>
-     * Design test: an element is removed, then is checked the correct position of the previous and next element.
+     * Design test: A null element is added then removed. An element is removed, then is checked the correct position of the previous and next element.
      * Another element is removed, then is checked if the entire list matches the expected result
      * <br><br>
      * Preconditions: get() and toArray() method must work correctly.
@@ -213,11 +214,14 @@ public class ListAdapterTest
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testRemoveObject(){
+        teamList.add(null);
+        teamList.remove(null);
         teamList.remove("Manchester United");
         assertEquals("Bayern Monaco", teamList.get(3));
         assertEquals("Real Madrid", teamList.get(2));
         teamList.remove("Bayern Monaco");
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Ajax"}, teamList.toArray());
+
     }
 
     /**
@@ -278,13 +282,13 @@ public class ListAdapterTest
      * Method for checking if listAdapter inserts correctly all the elements of a specified collection
      * <br><br>
      * Design test: some elements are added to emptyList, then emptyList is inserted at position 1 in teamList.
-     * emptyList is changed and is inserted again in the position size() -1. The collection is tried to add in a position which is
-     * out of bounds. A null collection is tried to add in teamList.
+     * emptyList is changed, and it is inserted again at position size() -1. After that the collection is added in a position which is
+     * out of bounds. A null collection is added in teamList.
      * <br><br>
      * Preconditions: add(), remove() and toArray() must work correctly.
      * <br><br>
-     * Postconditions and Expected resul: all the elements of emptyList has to be added in the correct position of teamList. An exception is
-     * thrown in the last two case.
+     * Postconditions and Expected result: all the elements of emptyList are added in the correct position of teamList. An exception is
+     * thrown in the last two cases.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -332,9 +336,9 @@ public class ListAdapterTest
     }
 
     /**
-     * Method for testing the removal of each element which aren't contained in the specified collection
+     * Method for testing the removal of every element that isn't contained in the specified collection
      * <br><br>
-     * Design test: retainAll() is called with an invalid parameter. Some elements are added to emptyList, then retainAll() is called on teamList.
+     * Design test: retainAll() is called with an invalid parameter. Some elements are added to emptyList then retainAll() is called on teamList.
      * <br><br>
      * Preconditions: add() and toArray() must work correctly
      * <br><br>
@@ -381,12 +385,42 @@ public class ListAdapterTest
      * <br><br>
      * Execution result: the first call of equals() has to return true. the second call has to return false.
      */
+    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testEquals(){
         HList list = new ListAdapter(teamList);
-        assertTrue(teamList.equals(list));
+        assertEquals(teamList, list);
         list.remove(0);
-        assertFalse(teamList.equals(list));
+        assertNotEquals(teamList, list);
+    }
+
+    /**
+     * Method for testing if different instances of listAdapter have the same hashCode.
+     * <br><br>
+     * Design test: newList is filled with all the elements of teamList. Are added to emptyList every element of teamList
+     * (two elements are swapped). newList is emptied. emptyList is emptied then is filled with all the elements of teamList.
+     * <br><br>
+     * Preconditions: constructor(parameter), add(), clear() and addAll() must work correctly.
+     * <br><br>
+     * Postconditions and Execution result: hashCode must return true in first and last case, false otherwise.
+     */
+    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
+    @Test
+    public void testHashCode(){
+        HList newList = new ListAdapter(teamList);
+        assertEquals(newList.hashCode(), teamList.hashCode());
+        emptyList.add("Milan");
+        emptyList.add("Liverpool");
+        emptyList.add("Bayern Monaco");
+        emptyList.add("Manchester United");
+        emptyList.add("Real Madrid");
+        emptyList.add("Ajax");
+        assertNotEquals(emptyList.hashCode(), teamList.hashCode());
+        newList.clear();
+        assertNotEquals(newList.hashCode(), teamList.hashCode());
+        emptyList.clear();
+        emptyList.addAll(teamList);
+        assertEquals(emptyList.hashCode(), teamList.hashCode());
     }
 
     /**
@@ -490,6 +524,7 @@ public class ListAdapterTest
         assertEquals(2, teamList.indexOf("Real Madrid"));
         teamList.set(0, "Ajax");
         assertEquals(0, teamList.indexOf("Ajax"));
+        assertEquals(-1, teamList.indexOf(null));
     }
 
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
@@ -499,6 +534,7 @@ public class ListAdapterTest
         teamList.add(5, "Real Madrid");
         assertEquals(4, teamList.lastIndexOf("Milan"));
         assertEquals(5, teamList.lastIndexOf("Real Madrid"));
+        assertEquals(-1, teamList.lastIndexOf(null));
     }
 
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
@@ -696,7 +732,7 @@ public class ListAdapterTest
         System.out.println(teamList.size());
         iterate(teamList.iterator());
 
-        int after = 0;
+        int after;
         int count = 0;
         while(teamList.size()>=2)
         {

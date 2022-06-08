@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  * This class provides add, insert, remove and inspect operations.
  * ListAdapter allows to duplicate elements, and it doesn't give any restriction on the type of the element that will be inserted (null is a valid value).
  * <br><br>
- * ListAdapter also manages sublists. In this case when a sublist has a structural change the father list has the same change.
+ * ListAdapter also manages sublist. In this case when a sublist has a structural change the father list has the same change.
  * <br><br>
  * ListAdapter provides ListIterator which will be described before the declaration of ListIterator subclass.
  *
@@ -291,18 +291,22 @@ public class ListAdapter implements HList, HCollection{
 
     @Override
     public int indexOf(Object obj) {
-        ListAdapter sub = new ListAdapter();
         HListIterator iter = listIterator();
-        while(iter.hasNext()) sub.add(iter.next());
-        return sub.list.indexOf(obj);
+        while(iter.hasNext()){
+            Object current = iter.next();
+            if(current == null ? obj == null : current.equals(obj)) return iter.previousIndex();
+        }
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object obj) {
-        ListAdapter sub = new ListAdapter();
-        HListIterator iter = listIterator();
-        while(iter.hasNext()) sub.add(iter.next());
-        return sub.list.lastIndexOf(obj);
+        HListIterator iter = listIterator(size());
+        while(iter.hasPrevious()){
+            Object current = iter.previous();
+            if(current == null ? obj == null : current.equals(obj)) return iter.nextIndex();
+        }
+        return -1;
     }
 
     @Override
@@ -350,19 +354,19 @@ public class ListAdapter implements HList, HCollection{
          */
         public ListIterator(int index){
             if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
-            this.next = index + from;
+            this.next = index;
             this.previous = next - 1;
             this.lastCall = 0;
         }
         @Override
         public boolean hasNext() {
-            return next < ListAdapter.this.to;
+            return next < size();
         }
 
         @Override
         public Object next() {
             if(!hasNext()) throw new NoSuchElementException();
-            Object toReturn = get(next - from);
+            Object toReturn = get(next);
             next++;
             previous = next - 1;
             lastCall = 1;
@@ -371,13 +375,13 @@ public class ListAdapter implements HList, HCollection{
 
         @Override
         public boolean hasPrevious() {
-            return previous >= ListAdapter.this.from;
+            return previous >= 0;
         }
 
         @Override
         public Object previous() {
             if(!hasPrevious()) throw new NoSuchElementException();
-            Object toReturn = get(previous - from);
+            Object toReturn = get(previous);
             previous--;
             next = previous + 1;
             lastCall = -1;
@@ -386,24 +390,24 @@ public class ListAdapter implements HList, HCollection{
 
         @Override
         public int nextIndex() {
-            return next + from;
+            return next;
         }
 
         @Override
         public int previousIndex() {
-            return previous + from;
+            return previous;
         }
 
         @Override
         public void remove() {
             if(lastCall == 0) throw new IllegalStateException();
             if(lastCall == 1){
-                ListAdapter.this.remove(previous - from);
+                ListAdapter.this.remove(previous);
                 next--;
                 previous = next - 1;
             }
             if(lastCall == -1){
-                ListAdapter.this.remove(next - from);
+                ListAdapter.this.remove(next);
             }
             lastCall = 0;
         }
@@ -412,16 +416,16 @@ public class ListAdapter implements HList, HCollection{
         public void set(Object obj) {
             if(lastCall == 0) throw new IllegalStateException();
             if(lastCall == 1){
-                ListAdapter.this.set(previous - from, obj);
+                ListAdapter.this.set(previous, obj);
             }
             if(lastCall == -1){
-                ListAdapter.this.set(next - from, obj);
+                ListAdapter.this.set(next, obj);
             }
         }
 
         @Override
         public void add(Object obj) {
-            ListAdapter.this.add(next - from, obj);
+            ListAdapter.this.add(next, obj);
             next++;
             previous = next - 1;
             lastCall = 0;
