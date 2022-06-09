@@ -44,11 +44,11 @@ public class ListAdapterTest
     static String[] teams = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"};
 
     /**
-     * Method for initializing the execution variables.
-     * An empty listAdapter, another one which contains "teams" elements and a listIterator attached to this one are created.
-     * In this way every method that is invoked always has a valid state.
+     * Method for initializing the execution variables:
+     * an empty list, another one which contains "teams" elements, and an iterator, attached to the latter, are created.
+     * In this way every method invoked always has a valid state.
      * <br><br>
-     * <strong>Preconditions</strong>: the constructors have to correctly initialize the execution variables
+     * <strong>Preconditions</strong>: the constructors have to correctly initialize the execution variables.
      */
     @Before
     public void setup()
@@ -64,16 +64,16 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#ListAdapter()} and {@link ListAdapter#ListAdapter(HCollection)}
      * <br><br>
-     * Method for checking the correct behaviour of the public constructors of listAdapter.
+     * Method for checking the correct behaviour of the public constructors of ListAdapter.
      * <br><br>
      * <strong>Design</strong>: a new list is instantiated by the void constructor. Another list is instantiated
-     * by the parameterized constructor
+     * by the parameterized constructor.
      * <br><br>
      * <strong>Preconditions</strong>: size() must work in the right way
      * <br><br>
      * <strong>Postconditions</strong> and <strong>Expected result</strong>: in the first case the void constructor
      * must return an empty list. In the last case the parameterized constructor must return a list which contains all the
-     * elements of teamList
+     * elements of teamList.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -87,15 +87,15 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#size()}
      * <br><br>
-     * Method for checking the correct size of listAdapter.
+     * Method for checking the correct size of the list.
      * <br><br>
-     * <strong>Design</strong>: checking the size of teamList before and after adding and removing an element.
+     * <strong>Design</strong>: checking the size of teamList before and after adding or removing an element.
      * emptyList doesn't have changes, so size() must return 0.
      * <br><br>
      * <strong>Preconditions</strong>: the add() and remove() method must work in the right way
      * <br><br>
      * <strong>Postconditions</strong> and <strong>Expected result</strong>: the returned value of size()
-     * method must correspond to the number of elements inside the listAdapter
+     * method must correspond to the number of elements inside the list.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -111,16 +111,16 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#isEmpty()}
      * <br><br>
-     * Method for checking if a listAdapter is empty.
+     * Method for checking if the list is empty.
      * <br><br>
      * <strong>Design</strong>: teamList is emptied and isEmpty() is invoked. An element is added and isEmpty is invoked again.
      * emptyList doesn't have changes, so isEmpty() must return true.
      * <br><br>
-     * <strong>Preconditions</strong>: clear() and add() methods must work correctly
+     * <strong>Preconditions</strong>: clear() and add() method must work correctly.
      * <br><br>
-     * <strong>Postconditions</strong>: isEmpty must return true if the collection is empty, false otherwise
+     * <strong>Postconditions</strong>: isEmpty must return true if the collection is empty, otherwise it must return false.
      * <br><br>
-     * <strong>Expected result</strong>: true after the removal of all elements, false after the insert.
+     * <strong>Expected result</strong>: true after the removal of all the elements, false after the insert.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -135,16 +135,17 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#contains(Object)}
      * <br><br>
-     * Method for checking if listAdapter contains a specific element.
+     * Method for checking if the list contains a specific element.
      * <br><br>
      * <strong>Design</strong>: an element is added to teamList. Check if that element is present inside the list. Check if an element
      * that wasn't added isn't inside the list.
      * <br><br>
      * <strong>Preconditions</strong>: add() method must work correctly.
      * <br><br>
-     * <strong>Postconditions</strong>: contains() must return true if the parameter is inside the list, false otherwise.
+     * <strong>Postconditions</strong>: contains() must return true if the parameter is inside the list, otherwise it must return false.
      * <br><br>
-     * <strong>Expected result</strong>: true when is searched the element that was added, false when is searched the element that isn't present in the list.
+     * <strong>Expected result</strong>: it must return true when the added element is searched, false when the element that
+     * isn't in the list is searched.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -157,13 +158,13 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#toArray()}
      * <br><br>
-     * Method for checking the conversion from listAdapter to array of Object.
+     * Method for checking the conversion from ListAdapter to Object[].
      * <br><br>
      * <strong>Design</strong>: teamList is converted to array. Then two elements are added and the list is converted again.
      * <br><br>
      * <strong>Preconditions</strong>: add() method must work correctly.
      * <br><br>
-     * <strong>Postconditions</strong>: the returned array has to contain the same elements of teamList and emptyList
+     * <strong>Postconditions</strong>: the returned array has to contain the same elements of teamList and emptyList.
      * <br><br>
      * <strong>Expected result</strong>: toArray() called on teamList must return an array with the same elements of the list even after the addition of an element.
      * toArray() called on emptyList must return an empty array.
@@ -182,20 +183,23 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#toArray(Object[])}
      * <br><br>
-     * Method for checking the correct copying of the elements of listAdapter into a specified array.
-     * toArray(target) must return an array fitted to the list if target size is smaller or equal than listAdapter size.
-     * If target size is greater than listAdapter's size, toArray(target) must return an array with null elements at the end.
+     * Method for checking the correct copying process of the elements of the list into a specified array.
+     * toArray(target) must return an array with the same size of the list if target size is smaller or equal than list size.
+     * If target size is greater than list's size, toArray(target) must return an array with null elements at the end.
      * <br><br>
-     * <strong>Design</strong>: first toArray(target) is executed with a target with the same size of teamList. Then it is executed with a target with
+     * <strong>Design</strong>: at the beginning, toArray(target) is executed with a target with the same size of teamList.
+     * Then it is executed with a target with
      * a different size. After that, this method is executed with a null parameter.
      * <br><br>
      * <strong>Preconditions</strong>: size() must work correctly
      * <br><br>
-     * <strong>Postconditions</strong>: the returned array has to contain teamList's elements in addition to null element if target's size is greater
+     * <strong>Postconditions</strong>: the returned array has to contain teamList's elements in addition to null elements if target's size
+     * is greater
      * than teamList's size.
      * <br><br>
-     * <strong>Expected result</strong>: in the first and the third case the returned array contains only the elements of the list. In the second case the returned
-     * array contains the elements of the list plus nulls filling the remaining space.
+     * <strong>Expected result</strong>: in the first and in the third case, the returned array contains only the elements of the list.
+     * In the second case the returned
+     * array contains the elements of the list plus null ones filling the remaining space.
      * toArray() has to throw an exception in the last case.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
