@@ -715,16 +715,16 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * Test of {@link ListAdapter.ListIterator#previous()}
      * <br><br>
+     * Method for checking if previous() method returns the correct element of the list.
      * <br><br>
-     * Design case:
+     * Design case: iter is moved forward and backward, the method is called three times.
      * <br><br>
-     * Preconditions:
+     * Preconditions: next() method must work correctly.
      * <br><br>
-     * Postconditions:
-     * <br><br>
-     * Execution result:
+     * Postconditions and Execution result: previous() must return always the correct value. In the first and the last
+     * case an exception must be launched. In the second case previous() must return the correct element.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -736,16 +736,17 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * Test of {@link ListAdapter.ListIterator#nextIndex()}
      * <br><br>
+     * Method for checking if nextIndex() method returns correctly the index of the element
+     * that will be returned with a next() call.
      * <br><br>
-     * Design case:
+     * Design case: iter is in front of teamList, nextIndex() is called. Then iter is moved forward to the end of the list.
+     * nextIndex() is called again.
      * <br><br>
-     * Preconditions:
+     * Preconditions: next() and size() method must work correctly.
      * <br><br>
-     * Postconditions:
-     * <br><br>
-     * Execution result:
+     * Postconditions and Execution result: nextIndex() must return the index of the next element in every case.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -756,16 +757,18 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * Test of {@link ListAdapter.ListIterator#previousIndex()}
      * <br><br>
+     * Method for checking if previousIndex() method returns correctly the index of the element
+     * that will be returned with a previous() call.
      * <br><br>
-     * Design case:
+     * Design case: iter is in front of teamList, previousIndex() is called. Then iter is moved forward
+     * to the end of the list. The method is called again.
      * <br><br>
-     * Preconditions:
+     * Preconditions: next() method must work correctly.
      * <br><br>
-     * Postconditions:
-     * <br><br>
-     * Execution result:
+     * Postconditions and Execution result: the method must return the index of the previous element in
+     * every case.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -776,16 +779,22 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * Test of {@link ListAdapter.ListIterator#remove()}
      * <br><br>
+     * Method for checking the correct behaviour of remove() method.
      * <br><br>
-     * Design case:
+     * Design case: remove() can be called only after a previous() or next() call. The method
+     * is immediately called. Then iter is moved forward and
+     * remove is called again(). iter is moved to the end of teamList, previous() is called and then remove() is called again.
+     * At the end of the test toArray must return the expected array.
      * <br><br>
-     * Preconditions:
+     * Preconditions: next(), hasNext(), previous() and toArray() must work correctly.
      * <br><br>
-     * Postconditions:
+     * Postconditions: remove() is successful only if there was a call to next() or previous() before.
      * <br><br>
-     * Execution result:
+     * Execution result:In first case the call of remove() must throw an IllegalStateException
+     * because neither next() nor previous() were called before. In the second and last case the call of remove()
+     * must succeed. At the end toArray() must return the expected array.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -802,16 +811,20 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * Test of {@link ListAdapter.ListIterator#set(Object)}
      * <br><br>
+     * Method for checking the correct behaviour of set() method.
      * <br><br>
-     * Design case:
+     * Design case: like remove(), set() can be called only after a previous() or next() call.
+     * The method is called immediately. Then iter is moved forward of 1 position and set() is called again.
      * <br><br>
-     * Preconditions:
+     * Preconditions: next() and get() methods must work correctly.
      * <br><br>
-     * Postconditions:
+     * Postconditions: set() is successful only if there was a call to next() or previous() before.
      * <br><br>
-     * Execution result:
+     * Execution result: in the first case must be thrown an IllegalStateException because
+     * neither next() nor previous() were called before. After the call of next(), set() must be successful and the element
+     * must be modified.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -823,16 +836,19 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * Test of {@link ListAdapter.ListIterator#add(Object)}
      * <br><br>
+     * Method for checking if add() insert the specified element in the position returned by nextIndex().
      * <br><br>
-     * Design case:
+     * Design case: two elements are added to the list. Then iter is moved back and another element
+     * is added to teamList.
      * <br><br>
-     * Preconditions:
+     * Preconditions: previous() and next() methods must work correctly
      * <br><br>
-     * Postconditions:
+     * Postconditions: the elements must be added in the correct positions.
      * <br><br>
-     * Execution result:
+     * Execution result: the first two elements have to be added in the first two position of teamList.
+     * The last element must be added before the two elements previously added.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -849,16 +865,15 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * Test of the general behaviour of listIterator.
      * <br><br>
+     * Design case: the iterator is moved forward and backward in teamList. Some elements are added, removed and
+     * modified.
+     * The call of all the method of listIterator must be successful.
      * <br><br>
-     * Design case:
+     * Preconditions: all the methods must work correctly
      * <br><br>
-     * Preconditions:
-     * <br><br>
-     * Postconditions:
-     * <br><br>
-     * Execution result:
+     * Postconditions: the test must work
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
