@@ -578,14 +578,18 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter#indexOf(Object)}
+     * Test of {@link ListAdapter#lastIndexOf(Object)}
+     * <br><br>
+     * Method for checking if is returned the last index of a specified element
      * <br><br>
      * Design case: two elements already present inside teamList are added to the list. in first and second cases
      * is required the index of the last occurrence of a specified element. In the last case is requested the index of
      * an element which isn't inside the list.
      * <br><br>
      * Preconditions: add() method must work correctly.
+     * <br><br>
      * Postconditions: lastIndexOf() must return the last occurrence of the specified element
+     * <br><br>
      * Execution result: equality must be verified in all cases
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
@@ -598,6 +602,51 @@ public class ListAdapterTest
         assertEquals(-1, teamList.lastIndexOf(null));
     }
 
+    /**
+     * Test of {@link ListAdapter#subList(int, int)}
+     * <br><br>
+     * Method for checking the correct update of the father list if there is a structural change in the subList
+     * <br><br>
+     * Design case: is created a subList from teamList (exclusive first and last element). Then is created a subList from the
+     * previous subList (exclusive first and last element). Then is inserted an element in the second subList.
+     * <br><br>
+     * Preconditions: size(), add(), toArray() methods must work correctly.
+     * <br><br>
+     * Postconditions: if a structural change is made on a subList, the father list must be updated.
+     * <br><br>
+     * Execution result: after the creation of two subLists, an element is added in the last subList.
+     * toArray() method must return the expected array for every list. It must contain the new element inserted in the correct
+     * position.
+     */
+    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
+    @Test
+    public void testSublist(){
+        HList sub1 = teamList.subList(1, teamList.size() - 1);
+        assertArrayEquals(new Object[]{"Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco"}, sub1.toArray());
+        HList sub2 = sub1.subList(1, sub1.size() - 1);
+        assertArrayEquals(new Object[]{"Real Madrid", "Manchester United"}, sub2.toArray());
+        sub2.add(1, "Chelsea");
+        assertArrayEquals(new Object[]{"Real Madrid", "Chelsea", "Manchester United"}, sub2.toArray());
+        assertArrayEquals(new Object[]{"Liverpool", "Real Madrid", "Chelsea", "Manchester United", "Bayern Monaco"}, sub1.toArray());
+        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Chelsea", "Manchester United", "Bayern Monaco", "Ajax"},
+                teamList.toArray());
+    }
+
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * <br><br>
+     * Method for checking hasNext() returns true if there is an element after it.
+     * <br><br>
+     * Design case: a listIterator is created in front of the list and hasNext() in called. Then the iterator is
+     * moved forward and hasNext() is called again. When the iterator came to the end of teamList, hasNext() is called again.
+     * <br><br>
+     * Preconditions: no preconditions are necessary
+     * <br><br>
+     * Postconditions: hasNext() must return true if iter isn't came to the end of the list, false otherwise.
+     * <br><br>
+     * Execution result: in the first three cases the method has to return true (because it isn't came to the end).
+     * In the last case it has to return false.
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testHasNextListIterator(){
@@ -613,6 +662,18 @@ public class ListAdapterTest
         assertFalse(iter.hasNext());
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#next()}
+     * <br><br>
+     * Method for checking if next() method returns the correct element of the list
+     * <br><br>
+     * Design case: the iterator is moved forward and backward in teamList and next() method is called
+     * many times.
+     * <br><br>
+     * Preconditions: previous() and nextIndex() methods must work correctly.
+     * <br><br>
+     * Postconditions and Execution result: next() must always return the correct element
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testNextListIterator(){
@@ -624,6 +685,21 @@ public class ListAdapterTest
         assertEquals("Manchester United", teamList.get(iter.nextIndex()));
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasPrevious()}
+     * <br><br>
+     * Method for checking hasPrevious() returns true if there is an element before it.
+     * <br><br>
+     * Design case: a listIterator is created in front of the list and hasPrevious() in called. Then the iterator is
+     * moved to the end of teamList. Then the iterator is moved backward and hasPrevious() is called several times.
+     * <br><br>
+     * Preconditions: next() and previous() methods must work correctly.
+     * <br><br>
+     * Postconditions: hasPrevious() must return true if iter isn't came to the front of the list, false otherwise.
+     * <br><br>
+     * Execution result: in the first case the method must return false (iter is in front of the list). In the second and third
+     * case the method must return true. In the last case it must return false (because iter is again in the front of the list).
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testHasPreviousListIterator(){
@@ -638,6 +714,18 @@ public class ListAdapterTest
         assertFalse(iter.hasPrevious());
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * <br><br>
+     * <br><br>
+     * Design case:
+     * <br><br>
+     * Preconditions:
+     * <br><br>
+     * Postconditions:
+     * <br><br>
+     * Execution result:
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testPreviousListIterator(){
@@ -647,6 +735,18 @@ public class ListAdapterTest
         assertThrows(NoSuchElementException.class, () -> iter.previous());
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * <br><br>
+     * <br><br>
+     * Design case:
+     * <br><br>
+     * Preconditions:
+     * <br><br>
+     * Postconditions:
+     * <br><br>
+     * Execution result:
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testNextIndexListIterator(){
@@ -655,6 +755,18 @@ public class ListAdapterTest
         assertEquals(teamList.size(), iter.nextIndex());
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * <br><br>
+     * <br><br>
+     * Design case:
+     * <br><br>
+     * Preconditions:
+     * <br><br>
+     * Postconditions:
+     * <br><br>
+     * Execution result:
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testPreviousIndexListIterator(){
@@ -663,6 +775,18 @@ public class ListAdapterTest
         assertEquals(5, iter.previousIndex());
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * <br><br>
+     * <br><br>
+     * Design case:
+     * <br><br>
+     * Preconditions:
+     * <br><br>
+     * Postconditions:
+     * <br><br>
+     * Execution result:
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testRemoveListIterator(){
@@ -677,6 +801,18 @@ public class ListAdapterTest
         assertArrayEquals(new Object[]{"Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco"}, teamList.toArray());
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * <br><br>
+     * <br><br>
+     * Design case:
+     * <br><br>
+     * Preconditions:
+     * <br><br>
+     * Postconditions:
+     * <br><br>
+     * Execution result:
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testSetListIterator(){
@@ -686,6 +822,18 @@ public class ListAdapterTest
         assertEquals("Chelsea", teamList.get(0));
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * <br><br>
+     * <br><br>
+     * Design case:
+     * <br><br>
+     * Preconditions:
+     * <br><br>
+     * Postconditions:
+     * <br><br>
+     * Execution result:
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testAddListIterator(){
@@ -700,6 +848,18 @@ public class ListAdapterTest
         assertEquals("Porto", iter.next());
     }
 
+    /**
+     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * <br><br>
+     * <br><br>
+     * Design case:
+     * <br><br>
+     * Preconditions:
+     * <br><br>
+     * Postconditions:
+     * <br><br>
+     * Execution result:
+     */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testListIterator(){
@@ -718,174 +878,5 @@ public class ListAdapterTest
         iter.remove();
         assertThrows(IndexOutOfBoundsException.class, () -> teamList.get(iter.previousIndex()));
         assertEquals("Porto", teamList.get(iter.nextIndex()));
-    }
-
-    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
-    @Test
-    public void testBacking() {
-        System.out.println("TestBacking");
-        System.out.println("List.toString() ? " + teamList);
-
-        int dl0, dl1, dli, dsl0, dsl1, dsli;
-
-        iterate(teamList.iterator());
-        System.out.println(teamList + " " + teamList.size());
-        dl0 = teamList.size();
-
-        emptyList = teamList.subList(0, teams.length/2);
-        dsl0 = emptyList.size();
-
-        emptyList.add("Chelsea");
-        dli = teamList.size();
-        dsli = emptyList.size();
-
-        assertEquals("\n*** sublist add is NOT backed correctly ***\n", dli, dl0+1);
-        assertEquals("\n*** sublist add is NOT backed correctly ***\n", dsli, dsl0+1);
-
-        emptyList.remove("Chelsea");
-        assertEquals("\n*** list remove is NOT backed correctly ***\n", teamList.size(), dl0);
-        assertEquals("\n*** list remove is NOT backed correctly ***\n", emptyList.size(), dsl0);
-
-
-        iterate(emptyList.iterator());
-        System.out.println(emptyList + " " + emptyList.size());
-
-        emptyList.clear();
-        dl1 = teamList.size();
-        dsl1 = emptyList.size();
-        System.out.println(teamList + " " + teamList.size());
-        iterate(teamList.iterator());
-        System.out.println(emptyList + " " + emptyList.size());
-        iterate(emptyList.iterator());
-
-        System.out.println(dl0 + " " + dl1 + " " + dsl0 + " " + dsl1);
-        assertEquals("\n*** sublist is NOT backed correctly ***\n", dsl0, (dl0/2));
-        assertEquals("\n*** sublist is NOT backed correctly ***\n", dsl1, 0);
-        assertEquals("\n*** sublist is NOT backed correctly ***\n", dl1, (dl0 - dsl0));
-
-    }
-
-    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
-    @Test
-    public void testRecursiveSublist() {
-        System.out.println("TestRecursive SubListing");
-        teamList.clear();
-        System.out.println(teamList.size());
-
-        assertEquals("List Starts not empty", teamList.size(), 0);
-        int prev = teamList.size();
-        for (String s : teams) {
-            teamList.add(s);
-        }
-        assertEquals("List add not working correctly", teamList.size(), (prev + teams.length));
-        System.out.println(teamList.size());
-        prev = teamList.size();
-        for (String s : teams) {
-            teamList.add(s);
-        }
-        assertEquals("List add not working correctly", teamList.size(), (prev + teams.length));
-        System.out.println(teamList.size());
-        prev = teamList.size();
-        for (String s : teams) {
-            teamList.add(s);
-        }
-        assertEquals("List add not working correctly", teamList.size(), (prev + teams.length));
-        System.out.println(teamList.size());
-        iterate(teamList.iterator());
-
-        int after;
-        int count = 0;
-        while(teamList.size()>=2)
-        {
-            count++;
-            prev = teamList.size();
-            teamList = teamList.subList(1, prev-1);
-            after = teamList.size();
-            System.out.println(after);
-            assertEquals("Iterative Sublisting not working at " + count + " iteration", after, (prev-2));
-            iterate(teamList.iterator());
-        }
-    }
-
-    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
-    @Test
-    public void testIterator3() {
-        System.out.println("TestListIterator #3");
-        int dl0, dl1, dl2;
-        teamList.clear();
-
-        dl0 = teamList.size();
-        for (String s : teams) {
-            teamList.add(s);
-        }
-        dl1 = teamList.size();
-        iterate(teamList.iterator());
-        iter = teamList.listIterator();
-        while(iter.hasNext())
-            iter.next();
-        while(iter.hasPrevious())
-        {
-            System.out.print(iter.previous() + " ");
-            iterate(teamList.iterator());
-            iter.remove();
-        }
-        dl2 = teamList.size();
-        iterate(teamList.iterator());
-
-        assertEquals("\n*** insertion and forward to end and backward removal not working ***\n", dl1, (dl0+teams.length));
-        assertEquals("\n*** insertion and forward to end and backward removal not working ***\n", dl2, 0);
-    }
-
-    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
-    @Test
-    public void testIterator2() {
-        System.out.println("TestListIterator #2");
-        int dl0, dl1, dl2;
-        teamList.clear();
-        dl0 = teamList.size();
-        for (String s : teams) {
-            teamList.add(s);
-        }
-        dl1 = teamList.size();
-        iterate(teamList.iterator());
-        iter = teamList.listIterator();
-        while(iter.hasNext())
-        {
-            System.out.print(iter.next() + " ");
-            iterate(teamList.iterator());
-            iter.remove();
-        }
-        dl2 = teamList.size();
-        iterate(teamList.iterator());
-
-        assertEquals("\n*** insertion and forward removal not working ***\n", dl1, (dl0+teams.length));
-        assertEquals("\n*** insertion and forward removal not working ***\n", dl2, 0);
-    }
-
-    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
-    @Test
-    public void testIterator1() {
-        System.out.println("TestListIterator #1");
-        teamList.clear();
-        iterate(teamList.iterator());
-        iter = teamList.listIterator(teamList.size());
-        while(iter.hasPrevious())
-        {
-            System.out.print(iter.previous() + " ");
-            iterate(teamList.iterator());
-            iter.remove();
-        }
-        iterate(teamList.iterator());
-
-        assertEquals("\n*** listIterator from end not working ***\n", teamList.size(), 0);
-    }
-
-    public static void iterate(HIterator iter) {
-        System.out.print("{");
-        while(iter.hasNext())
-        {
-            System.out.print(iter.next() + "; ");
-        }
-        System.out.println("}");
     }
 }
