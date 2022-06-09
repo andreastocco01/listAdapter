@@ -217,14 +217,15 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#add(Object)}
      * <br><br>
-     * Method for checking the correct addition of the elements to the listAdapter
+     * Method for checking the correct addition of the elements to the list.
      * <br><br>
-     * <strong>Design</strong>: two elements are added at the end of teamList. Check if the last element is correct, then the last element is removed
-     * and is checked again if the last element is correct
+     * <strong>Design</strong>: two elements are added at the end of teamList. Check if the last element is correct,
+     * then the last element is removed
+     * and is checked again if the last element is correct.
      * <br><br>
      * <strong>Preconditions</strong>: remove() and size() method must work correctly.
      * <br><br>
-     * <strong>Postconditions</strong> and <strong>Expected result</strong>: the last element of the list has to be the last element added
+     * <strong>Postconditions</strong> and <strong>Expected result</strong>: the last element of the list has to be the last one to be added.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -242,8 +243,9 @@ public class ListAdapterTest
      * <br><br>
      * Method for checking the correct removal of an element (specified by his value)
      * <br><br>
-     * <strong>Design</strong>: A null element is added then removed. An element is removed, then is checked the correct position of the previous and next element.
-     * Another element is removed, then is checked if the entire list matches the <strong>Expected result</strong>
+     * <strong>Design</strong>: A null element is added then removed. An element is removed, then is checked the correct
+     * position of the previous and next element.
+     * Another element is removed, then is checked if the entire list matches the expected result
      * <br><br>
      * <strong>Preconditions</strong>: get() and toArray() method must work correctly.
      * <br><br>
@@ -267,17 +269,20 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#containsAll(HCollection)}
      * <br><br>
-     * Method for checking if listAdapter contains an entire collection, which is passed by parameter
+     * Method for checking if the list contains an entire collection, which is passed by parameter
      * <br><br>
-     * <strong>Design</strong>: check if teamList contains an empty collection. add to the empty collection some elements which are contained in teamList
+     * <strong>Design</strong>: check if teamList contains an empty collection. add to the empty collection some elements
+     * which are contained in teamList
      * and check again if teamList contains this new collection. An element in emptyList is changed, then containsAll() is called again.
      * Then containsAll() is called with an invalid parameter.
      * <br><br>
      * <strong>Preconditions</strong>: add() and set() method must work correctly
      * <br><br>
-     * <strong>Postconditions</strong>: containsAll() has to return true if and only if the listAdapter contains all the element of the parameter collection
+     * <strong>Postconditions</strong>: containsAll() has to return true if and only if the list contains all the element
+     * of the parameter collection
      * <br><br>
-     * <strong>Expected result</strong>: teamList must contain the emptyList. When elements are added to emptyList containsAll() has to return true again.
+     * <strong>Expected result</strong>: teamList must contain the emptyList. When elements are added to emptyList containsAll()
+     * has to return true again.
      * When another element is added to emptyList and then this element is changed, teamList mustn't contain the emptyList.
      * When the parameter is null, this method has to throw a NullPointerException.
      */
@@ -299,9 +304,10 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#addAll(HCollection)}
      * <br><br>
-     * Method for checking if listAdapter add at the end all element of a specified collection
+     * Method for checking if the list adds at the end all the elements of a specified collection
      * <br><br>
-     * <strong>Design</strong>: some elements are added to emptyList. teamList has to add all of emptyList's elements. addAll() has to throw an exception
+     * <strong>Design</strong>: some elements are added to emptyList. teamList has to add all the emptyList's elements. addAll() has to
+     * throw an exception
      * if the parameter is null.
      * <br><br>
      * <strong>Preconditions</strong>: add() and toArray() must work correctly.
@@ -325,15 +331,16 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#addAll(int, HCollection)}
      * <br><br>
-     * Method for checking if listAdapter inserts correctly all the elements of a specified collection
+     * Method for checking if the list inserts correctly all the elements of a specified collection
      * <br><br>
      * <strong>Design</strong>: some elements are added to emptyList, then emptyList is inserted at position 1 in teamList.
-     * emptyList is changed, and it is inserted again at position size() -1. After that the collection is added in a position which is
+     * emptyList is changed, and it is inserted again at position size() -1. After that, the collection is added in a position which is
      * out of bounds. A null collection is added in teamList.
      * <br><br>
      * <strong>Preconditions</strong>: add(), remove() and toArray() must work correctly.
      * <br><br>
-     * <strong>Postconditions</strong> and <strong>Expected result</strong>: all the elements of emptyList are added in the correct position of teamList. An exception is
+     * <strong>Postconditions</strong> and <strong>Expected result</strong>: all the elements of emptyList are added in the correct
+     * position of teamList. An exception is
      * thrown in the last two cases.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
@@ -392,8 +399,8 @@ public class ListAdapterTest
      * <br><br>
      * <strong>Preconditions</strong>: add() and toArray() must work correctly
      * <br><br>
-     * <strong>Postconditions</strong> and <strong>Expected result</strong>: In the first case, the method must throw an exception. In the second case
-     * after the call of retainAll(), teamList must contain only the elements which are inside emptyList
+     * <strong>Postconditions</strong> and <strong>Expected result</strong>: In the first case, the method must throw an exception. In the second case,
+     * after the call of retainAll(), teamList must contain only the elements which are inside emptyList.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -409,7 +416,7 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#clear()}
      * <br><br>
-     * Method for checking the emptying of a listAdapter.
+     * Method for checking the emptying of the list.
      * <br><br>
      * <strong>Design</strong>: teamList is emptied, then the size of the list has to be 0.
      * <br><br>
@@ -429,13 +436,13 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#equals(Object)}
      * <br><br>
-     * Method for checking if two instances of listAdapter contain the same elements
+     * Method for checking if two instances of ListAdapter contain the same elements
      * <br><br>
-     * <strong>Design</strong>: a new listAdapter is created by copying all the elements of teamList. Then an element is remove from that list.
+     * <strong>Design</strong>: a new list is created by copying all the elements of teamList. Then an element is remove from that list.
      * <br><br>
      * <strong>Preconditions</strong>: constructor with parameter must work correctly.
      * <br><br>
-     * <strong>Postconditions</strong>: equals() has to return true if the two listAdapter contains the same elements and has the same size.
+     * <strong>Postconditions</strong>: equals() has to return true if the two lists contains the same elements and has the same size.
      * <br><br>
      * <strong>Expected result</strong>: the first call of equals() has to return true. the second call has to return false.
      */
@@ -451,7 +458,7 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#hashCode()}
      * <br><br>
-     * Method for testing if different instances of listAdapter have the same hashCode.
+     * Method for testing if different instances of ListAdapter have the same hashCode.
      * <br><br>
      * <strong>Design</strong>: newList is created with the elements of teamList. Are added to emptyList every element of teamList
      * (two elements are swapped). newList is emptied. emptyList is emptied then is filled with all the elements of teamList.
@@ -482,7 +489,7 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#get(int)}
      * <br><br>
-     * Method for checking if get() method returns the correct element inside the listAdapter.
+     * Method for checking if get() method returns the correct element inside the list.
      * <br><br>
      * <strong>Design</strong>: two elements inside teamList are inspected. Then an index which isn't inside teamList is inspected.
      * An element is added to teamList, then another two elements are inspected.
@@ -508,10 +515,10 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#set(int, Object)}
      * <br><br>
-     * Method for checking if set() modify the correct element of listAdapter
+     * Method for checking if set() modify the correct element of the list
      * <br><br>
      * <strong>Design</strong>: change the value of an element inside the list, then check if the modification of that element was
-     * successful. Then set() is called on an element outside the listAdapter.
+     * successful. Then set() is called on an element outside the list.
      * <br><br>
      * <strong>Preconditions</strong>: get() and size() must work correctly.
      * <br><br>
@@ -530,14 +537,15 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#add(int, Object)}
      * <br><br>
-     * Method for testing if the addition of an element in every position of the listAdapter works correctly
+     * Method for testing if the addition of an element in every position of the list works correctly
      * <br><br>
      * <strong>Design</strong>: an element is inserted inside teamList.
      * Then try to add an element in a position out from teamList. After that an element is added at the end of teamList.
      * <br><br>
      * <strong>Preconditions</strong>: get() and toArray() must work correctly.
      * <br><br>
-     * <strong>Postconditions</strong>: the attempt to add elements out of bounds must throw an exception. The addition of elements inside the listAdapter
+     * <strong>Postconditions</strong>: the attempt to add elements out of bounds must throw an exception. The addition of elements inside
+     * the list
      * must be successful.
      * <br><br>
      * <strong>Expected result</strong>: after the insertion of the first element, a call to get() method must return the element just added.
@@ -560,9 +568,10 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter#remove(int)}
      * <br><br>
-     * Method for checking if an element is removed from the listAdapter (specified by his index)
+     * Method for checking if an element is removed from the list (specified by his index)
      * <br><br>
-     * <strong>Design</strong>: an element is removed from teamList, then the element in that position has to be the element following the one removed.
+     * <strong>Design</strong>: an element is removed from teamList, then the element in that position has to be the element following
+     * the one removed.
      * remove() method is called in a position which isn't inside teamList.
      * <br><br>
      * <strong>Preconditions</strong>: get(), size() and toArray must work correctly.
@@ -663,16 +672,16 @@ public class ListAdapterTest
     /**
      * Test of {@link ListAdapter.ListAdapterIterator#ListAdapterIterator()} and {@link ListAdapter.ListAdapterIterator#ListAdapterIterator(int)}
      * <br><br>
-     * Method for checking the correct behaviour of the public constructors of listAdapterIterator.
+     * Method for checking the correct behaviour of the public constructors of ListAdapterIterator.
      * <br><br>
-     * <strong>Design</strong>: a new listAdapterIterator is instantiated by the void constructor. Another listAdapterIterator
+     * <strong>Design</strong>: a new iterator is instantiated by the void constructor. Another iterator
      * is instantiated by the parameterized constructor
      * <br><br>
      * <strong>Preconditions</strong>: next() must work in the right way
      * <br><br>
      * <strong>Postconditions</strong> and <strong>Expected result</strong>: in the first case the void constructor
-     * must return a listAdapterIterator pointing the first element of teamList. In the last case the parameterized
-     * constructor must return a listAdapterIterator pointing to the fourth element of the list
+     * must return an iterator pointing the first element of teamList. In the last case the parameterized
+     * constructor must return an iterator pointing to the fourth element of the list
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -688,7 +697,7 @@ public class ListAdapterTest
      * <br><br>
      * Method for checking hasNext() returns true if there is an element after it.
      * <br><br>
-     * <strong>Design</strong>: a listIterator is created in front of the list and hasNext() in called. Then the iterator is
+     * <strong>Design</strong>: an iterator is created in front of the list and hasNext() in called. Then the iterator is
      * moved forward and hasNext() is called again. When the iterator came to the end of teamList, hasNext() is called again.
      * <br><br>
      * <strong>Preconditions</strong>: no preconditions are necessary
@@ -916,7 +925,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of the general behaviour of listIterator.
+     * Test of the general behaviour of iterators.
      * <br><br>
      * <strong>Design</strong>: the iterator is moved forward and backward in teamList. Some elements are added, removed and
      * modified.
