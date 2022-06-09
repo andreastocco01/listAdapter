@@ -8,10 +8,11 @@ import java.util.Objects;
  * Class Vector of Java Micro Edition, CLDC1.1<br>
  *
  * <p>
- * The object {@link myAdapter.Vector} is used to save e manage data, the porpouse of this class is only to filter the methods of vector in order to use only methods from CLDC1.1
+ * The object {@link myAdapter.Vector} is used to save e manage data, the porpouse of this class is only to
+ * filter the methods of vector in order to use only methods from CLDC1.1
  *
- * @see @link java.util.Vector
- * @author Alessandro Marcassa
+ * @see java.util.Vector
+ * @author Andrea Stocco
  */
 public class Vector {
 

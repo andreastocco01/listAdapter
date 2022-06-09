@@ -6,23 +6,23 @@ import org.junit.runner.notification.Failure;
 import java.util.*;
 
 /**
- * Main class to execute {@link myTest}
+ * Main class to execute {@link ListAdapterTest}
  * <p>
  *
- * Precondition: Object methods are considered in a working status when they are used
+ * <strong>Preconditions</strong>: Object methods are considered in a working status when they are used
  *
  * @version JUnit 4.13
  * @version Hamcrest: 1.3
  * @version JVM from JME CLDC 1.1
  *
- * @author Alessandro Marcassa
+ * @author Andrea Stocco
  */
 public class TestRunner {
     private static int totalTests = 0;
 
     /**
      * Main. Invoke all tests
-     * @param args - not used
+     * @param args not used
      */
     public static void main(String[] args) {
         Result res;

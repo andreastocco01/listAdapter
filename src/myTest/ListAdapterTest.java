@@ -4,8 +4,6 @@ import myAdapter.*;
 import org.junit.Before;
 import org.junit.Test;
 
-//import java.util.NoSuchElementException;
-import java.sql.BatchUpdateException;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
@@ -635,7 +633,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasNext()}
+     * Test of {@link ListAdapter.ListAdapterIterator#hasNext()}
      * <br><br>
      * Method for checking hasNext() returns true if there is an element after it.
      * <br><br>
@@ -665,7 +663,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#next()}
+     * Test of {@link ListAdapter.ListAdapterIterator#next()}
      * <br><br>
      * Method for checking if next() method returns the correct element of the list
      * <br><br>
@@ -688,7 +686,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#hasPrevious()}
+     * Test of {@link ListAdapter.ListAdapterIterator#hasPrevious()}
      * <br><br>
      * Method for checking hasPrevious() returns true if there is an element before it.
      * <br><br>
@@ -717,7 +715,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#previous()}
+     * Test of {@link ListAdapter.ListAdapterIterator#previous()}
      * <br><br>
      * Method for checking if previous() method returns the correct element of the list.
      * <br><br>
@@ -738,7 +736,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#nextIndex()}
+     * Test of {@link ListAdapter.ListAdapterIterator#nextIndex()}
      * <br><br>
      * Method for checking if nextIndex() method returns correctly the index of the element
      * that will be returned with a next() call.
@@ -759,7 +757,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#previousIndex()}
+     * Test of {@link ListAdapter.ListAdapterIterator#previousIndex()}
      * <br><br>
      * Method for checking if previousIndex() method returns correctly the index of the element
      * that will be returned with a previous() call.
@@ -781,7 +779,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#remove()}
+     * Test of {@link ListAdapter.ListAdapterIterator#remove()}
      * <br><br>
      * Method for checking the correct behaviour of remove() method.
      * <br><br>
@@ -813,7 +811,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#set(Object)}
+     * Test of {@link ListAdapter.ListAdapterIterator#set(Object)}
      * <br><br>
      * Method for checking the correct behaviour of set() method.
      * <br><br>
@@ -838,7 +836,7 @@ public class ListAdapterTest
     }
 
     /**
-     * Test of {@link ListAdapter.ListIterator#add(Object)}
+     * Test of {@link ListAdapter.ListAdapterIterator#add(Object)}
      * <br><br>
      * Method for checking if add() insert the specified element in the position returned by nextIndex().
      * <br><br>
