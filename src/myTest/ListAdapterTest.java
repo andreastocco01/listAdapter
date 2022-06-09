@@ -62,16 +62,40 @@ public class ListAdapterTest
     }
 
     /**
+     * Test of {@link ListAdapter#ListAdapter()} and {@link ListAdapter#ListAdapter(HCollection)}
+     * <br><br>
+     * Method for checking the correct behaviour of the public constructors of listAdapter.
+     * <br><br>
+     * <strong>Design</strong>: a new list is instantiated by the void constructor. Another list is instantiated
+     * by the parameterized constructor
+     * <br><br>
+     * <strong>Preconditions</strong>: size() must work in the right way
+     * <br><br>
+     * <strong>Postconditions</strong> and <strong>Expected result</strong>: in the first case the void constructor
+     * must return an empty list. In the last case the parameterized constructor must return a list which contains all the
+     * elements of teamList
+     */
+    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
+    @Test
+    public void testConstructors(){
+        HList list = new ListAdapter();
+        assertEquals(0, list.size());
+        HList list2 = new ListAdapter(teamList);
+        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}, list2.toArray());
+    }
+
+    /**
      * Test of {@link ListAdapter#size()}
      * <br><br>
      * Method for checking the correct size of listAdapter.
      * <br><br>
-     * <strong>Design</strong>: test of the size of the teamList before and after adding and removing an element.
+     * <strong>Design</strong>: checking the size of teamList before and after adding and removing an element.
      * emptyList doesn't have changes, so size() must return 0.
      * <br><br>
      * <strong>Preconditions</strong>: the add() and remove() method must work in the right way
      * <br><br>
-     * <strong>Postconditions</strong> and <strong>Expected result</strong>: the returned value of size() method must correspond to the number of elements inside the listAdapter
+     * <strong>Postconditions</strong> and <strong>Expected result</strong>: the returned value of size()
+     * method must correspond to the number of elements inside the listAdapter
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -630,6 +654,29 @@ public class ListAdapterTest
         assertArrayEquals(new Object[]{"Liverpool", "Real Madrid", "Chelsea", "Manchester United", "Bayern Monaco"}, sub1.toArray());
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Chelsea", "Manchester United", "Bayern Monaco", "Ajax"},
                 teamList.toArray());
+    }
+
+    /**
+     * Test of {@link ListAdapter.ListAdapterIterator#ListAdapterIterator()} and {@link ListAdapter.ListAdapterIterator#ListAdapterIterator(int)}
+     * <br><br>
+     * Method for checking the correct behaviour of the public constructors of listAdapterIterator.
+     * <br><br>
+     * <strong>Design</strong>: a new listAdapterIterator is instantiated by the void constructor. Another listAdapterIterator
+     * is instantiated by the parameterized constructor
+     * <br><br>
+     * <strong>Preconditions</strong>: next() must work in the right way
+     * <br><br>
+     * <strong>Postconditions</strong> and <strong>Expected result</strong>: in the first case the void constructor
+     * must return a listAdapterIterator pointing the first element of teamList. In the last case the parameterized
+     * constructor must return a listAdapterIterator pointing to the fourth element of the list
+     */
+    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
+    @Test
+    public void testListIteratorConstructors(){
+        HListIterator iterator = teamList.listIterator();
+        assertEquals("Milan", iterator.next());
+        HListIterator iterator2 = teamList.listIterator(4);
+        assertEquals("Bayern Monaco", iterator2.next());
     }
 
     /**
