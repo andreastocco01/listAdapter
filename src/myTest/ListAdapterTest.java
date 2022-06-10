@@ -972,7 +972,7 @@ public class ListAdapterTest
      * back and forth along the entire list sequentially and to be able to modify, remove and add data.
      * <br><br>
      * <strong>Expected result</strong>: the list contains exactly the elements contained by
-     * the manually created Object arrays with the expected values
+     * the manually created Object arrays with the expected values.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -992,5 +992,44 @@ public class ListAdapterTest
         iter.remove();
         assertThrows(IndexOutOfBoundsException.class, () -> teamList.get(iter.previousIndex()));
         assertEquals("Porto", teamList.get(iter.nextIndex()));
+    }
+
+    /**
+     * <strong>Summary</strong>: test of the general behaviour of lists.
+     * <br><br>
+     * <strong>Design</strong>: some elements are added, removed and modified inside the lists.
+     * subLists are created for doing some things more easily. There is also a case of same hashCode but
+     * different lists.
+     * <br><br>
+     * <strong>Preconditions</strong>: all the methods must work correctly.
+     * <br><br>
+     * <strong>Postconditions</strong>: the lists must allow you to do almost everything with the elements.
+     * <br><br>
+     * <strong>Expected result</strong>: the list contains exactly the elements contained by
+     * the manually created Object arrays with the expected values.
+     */
+    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
+    @Test
+    public void testList(){
+        teamList.add("Barcelona");
+        emptyList.add("Ajax");
+        assertTrue(teamList.containsAll(emptyList));
+        emptyList.addAll(teamList);
+        assertEquals(0, emptyList.indexOf("Ajax"));
+        assertEquals(emptyList.size() - 2, emptyList.lastIndexOf("Ajax"));
+        emptyList.removeAll(new ListAdapter(emptyList.subList(0, 1)));
+        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco",
+         "Barcelona"}, emptyList.toArray());
+        assertFalse(emptyList.equals(teamList));
+        teamList.subList(1, teamList.size()).clear();
+        emptyList.subList(1, emptyList.size()).clear();
+        assertTrue(emptyList.equals(teamList));
+        assertEquals(1, teamList.size());
+        teamList.add(null);
+        teamList.set(0, 1);
+        emptyList.add(0, null);
+        emptyList.set(1, 31);
+        assertEquals(emptyList.hashCode(), teamList.hashCode());
+        assertFalse(emptyList.equals(teamList));
     }
 }
