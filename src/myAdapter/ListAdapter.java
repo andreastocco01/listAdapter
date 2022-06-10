@@ -351,7 +351,7 @@ public class ListAdapter implements HList, HCollection{
     }
 
     /**
-     * Method that calculates the hashCode for the list
+     * Method that calculates the hashCode for the list.
      * If two lists are equals, then they must have the same hashCode
      * @return the hashCode for the list
      */
@@ -452,7 +452,7 @@ public class ListAdapter implements HList, HCollection{
     }
 
     /**
-     * Method which return a new instance of ListAdapterIterator
+     * Method which returns a new instance of ListAdapterIterator
      * @return a new instance of ListAdapterIterator
      */
     @Override
@@ -622,7 +622,7 @@ public class ListAdapter implements HList, HCollection{
         }
 
         /**
-         * Method for insert an element in the position returned by nextIndex()
+         * Method that inserts an element in the position returned by nextIndex()
          * @param obj the element to insert.
          */
         @Override
