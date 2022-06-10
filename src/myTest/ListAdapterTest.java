@@ -211,11 +211,17 @@ public class ListAdapterTest
     @Test
     public void testToArrayWithTarget(){
         Object[] target = new Object[teamList.size()];
-        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}, teamList.toArray(target));
+        // the list must be copied inside the array
+        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"},
+                teamList.toArray(target));
         target = new Object[teamList.size() + 2];
-        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax", null, null}, teamList.toArray(target));
+        // the list must be copied inside the array in addiction of NULLs for filling the remaining space
+        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax", null, null},
+                teamList.toArray(target));
         target = new Object[0];
-        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}, teamList.toArray(target));
+        // the list must be copied in another array with the same size
+        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"},
+                teamList.toArray(target));
         assertThrows(NullPointerException.class, () -> teamList.toArray(null));
     }
 
@@ -267,6 +273,7 @@ public class ListAdapterTest
         teamList.add(null);
         teamList.remove(null);
         teamList.remove("Manchester United");
+        // the following elements must be shifted back
         assertEquals("Bayern Monaco", teamList.get(3));
         assertEquals("Real Madrid", teamList.get(2));
         teamList.remove("Bayern Monaco");
@@ -304,6 +311,7 @@ public class ListAdapterTest
         assertTrue(teamList.containsAll(emptyList));
         emptyList.add("Ajax");
         assertTrue(teamList.containsAll(emptyList));
+        // an element is changed with an element which isn't inside teamList
         emptyList.set(0, "Inter");
         assertFalse(teamList.containsAll(emptyList));
         assertThrows(NullPointerException.class, () -> teamList.containsAll(null));
@@ -360,12 +368,14 @@ public class ListAdapterTest
     public void testAddAllWithIndex(){
         emptyList.add("Chelsea");
         emptyList.add("Benfica");
+        // the list is inserted at the second index
         teamList.addAll(1, emptyList);
         assertArrayEquals(new Object[]{"Milan", "Chelsea", "Benfica", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"},
                 teamList.toArray());
         emptyList.remove("Chelsea");
         emptyList.remove("Benfica");
         emptyList.add("Porto");
+        // the list is inserted at the last index
         teamList.addAll(teamList.size() - 1, emptyList);
         assertArrayEquals(new Object[]{"Milan", "Chelsea", "Benfica", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Porto", "Ajax"},
                 teamList.toArray());
@@ -395,10 +405,12 @@ public class ListAdapterTest
         assertThrows(NullPointerException.class, () -> teamList.removeAll(null));
         emptyList.add("Chelsea");
         emptyList.add("Benfica");
+        // nothing changes
         teamList.removeAll(emptyList);
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}, teamList.toArray());
         emptyList.add("Liverpool");
         emptyList.add("Manchester United");
+        // some elements are removed
         teamList.removeAll(emptyList);
         assertArrayEquals(new Object[]{"Milan", "Real Madrid", "Bayern Monaco", "Ajax"}, teamList.toArray());
     }
@@ -497,6 +509,7 @@ public class ListAdapterTest
         emptyList.add("Manchester United");
         emptyList.add("Real Madrid");
         emptyList.add("Ajax");
+        // two elements are swapped so the lists aren't the same
         assertNotEquals(emptyList.hashCode(), teamList.hashCode());
         newList.clear();
         assertNotEquals(newList.hashCode(), teamList.hashCode());
@@ -527,6 +540,7 @@ public class ListAdapterTest
         assertEquals("Milan", teamList.get(0));
         assertEquals("Ajax", teamList.get(teamList.size() - 1));
         assertThrows(IndexOutOfBoundsException.class, () -> teamList.get(teamList.size()));
+        // all the following elements are shifted
         teamList.add(1, "Chelsea");
         assertEquals("Chelsea", teamList.get(1));
         assertEquals("Liverpool", teamList.get(2));
@@ -580,6 +594,7 @@ public class ListAdapterTest
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Porto", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"},
                 teamList.toArray());
         assertThrows(IndexOutOfBoundsException.class, () -> teamList.add(8, "Inter"));
+        // an element append to the list
         teamList.add(teamList.size(), "Chelsea");
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Porto", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax", "Chelsea"},
                 teamList.toArray());
@@ -680,10 +695,13 @@ public class ListAdapterTest
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
     public void testSublist(){
+        // sub1 = {"Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco"}
         HList sub1 = teamList.subList(1, teamList.size() - 1);
         assertArrayEquals(new Object[]{"Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco"}, sub1.toArray());
+        // sub2 = {"Real Madrid", "Manchester United"}
         HList sub2 = sub1.subList(1, sub1.size() - 1);
         assertArrayEquals(new Object[]{"Real Madrid", "Manchester United"}, sub2.toArray());
+        // sub2 = {"Real Madrid", "Chelsea", "Manchester United"}
         sub2.add(1, "Chelsea");
         assertArrayEquals(new Object[]{"Real Madrid", "Chelsea", "Manchester United"}, sub2.toArray());
         assertArrayEquals(new Object[]{"Liverpool", "Real Madrid", "Chelsea", "Manchester United", "Bayern Monaco"}, sub1.toArray());
@@ -725,7 +743,7 @@ public class ListAdapterTest
      * <strong>Design</strong>: an iterator is created in front of the list and hasNext() in called. Then the iterator is
      * moved forward and hasNext() is called again. When the iterator came to the end of teamList, hasNext() is called again.
      * <br><br>
-     * <strong>Preconditions</strong>: no preconditions are necessary.
+     * <strong>Preconditions</strong>: next() must work correctly.
      * <br><br>
      * <strong>Postconditions</strong>: hasNext() must return true if iter isn't came to the end of the list, false otherwise.
      * <br><br>
@@ -897,9 +915,11 @@ public class ListAdapterTest
         assertThrows(IllegalStateException.class, () -> iter.remove());
         iter.next();
         iter.remove();
+        // teamList = {"Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
         assertEquals("Liverpool", iter.next());
         while(iter.hasNext())iter.next();
         iter.previous();
+        // teamList = {"Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco"}
         iter.remove();
         assertEquals("Bayern Monaco", iter.previous());
         assertArrayEquals(new Object[]{"Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco"}, teamList.toArray());
@@ -951,9 +971,11 @@ public class ListAdapterTest
         iter.add("Chelsea");
         iter.add("Porto");
         iter.previous();
+        // teamList = {"Chelsea", "Porto", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
         assertEquals("Porto", iter.next());
         iter.previous();
         iter.add("Barcelona");
+        // teamList = {"Chelsea", "Barcelona", "Porto", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
         assertEquals("Barcelona", iter.previous());
         iter.next();
         assertEquals("Porto", iter.next());
@@ -979,17 +1001,24 @@ public class ListAdapterTest
     public void testListIterator(){
         iter.add("Barcelona");
         iter.add("Benfica");
+        // teamList = {"Barcelona", "Benfica", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
         assertThrows(IllegalStateException.class, () -> iter.set("Chelsea"));
         iter.previous();
         iter.set("Chelsea");
+        // teamList = {"Barcelona", "Chelsea", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
         assertEquals("Chelsea", teamList.get(iter.nextIndex()));
         iter.remove();
+        // teamList = {"Barcelona", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
         assertEquals("Barcelona", teamList.get(iter.previousIndex()));
         iter.add("Porto");
+        // teamList = {"Barcelona", "Porto", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
         iter.previous();
         iter.previous();
         iter.next();
         iter.remove();
+        // teamList = {"Porto", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
+        assertArrayEquals(new Object[]{"Porto", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"},
+                teamList.toArray());
         assertThrows(IndexOutOfBoundsException.class, () -> teamList.get(iter.previousIndex()));
         assertEquals("Porto", teamList.get(iter.nextIndex()));
     }
@@ -1015,21 +1044,24 @@ public class ListAdapterTest
         emptyList.add("Ajax");
         assertTrue(teamList.containsAll(emptyList));
         emptyList.addAll(teamList);
+        // emptyList = {"Ajax", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
         assertEquals(0, emptyList.indexOf("Ajax"));
         assertEquals(emptyList.size() - 2, emptyList.lastIndexOf("Ajax"));
-        emptyList.removeAll(new ListAdapter(emptyList.subList(0, 1)));
+        emptyList.removeAll(new ListAdapter(emptyList.subList(0, 1))); // removed all "Ajax"
         assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco",
          "Barcelona"}, emptyList.toArray());
-        assertFalse(emptyList.equals(teamList));
-        teamList.subList(1, teamList.size()).clear();
-        emptyList.subList(1, emptyList.size()).clear();
-        assertTrue(emptyList.equals(teamList));
+        assertNotEquals(emptyList, teamList);
+        teamList.subList(1, teamList.size()).clear(); // removed all the elements after the first one
+        emptyList.subList(1, emptyList.size()).clear(); // removed all the elements after the first one
+        assertEquals(emptyList, teamList);
         assertEquals(1, teamList.size());
         teamList.add(null);
         teamList.set(0, 1);
+        // teamList = {1, null}
         emptyList.add(0, null);
         emptyList.set(1, 31);
+        // emptyList = {null, 31}
         assertEquals(emptyList.hashCode(), teamList.hashCode());
-        assertFalse(emptyList.equals(teamList));
+        assertNotEquals(emptyList, teamList);
     }
 }
