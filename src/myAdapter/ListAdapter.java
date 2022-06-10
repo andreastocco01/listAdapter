@@ -323,8 +323,8 @@ public class ListAdapter implements HList, HCollection{
     }
 
     /**
-     * Method that remove all the elements inside a list. After that, the size
-     * become 0
+     * Method that removes all the elements inside a list. After that, the size
+     * becomes 0
      */
     @Override
     public void clear() {
