@@ -1105,6 +1105,7 @@ public class ListAdapterTest
         /*
          * The removal of elements on teamList, causes an unexpected behaviour
          * of subList.
+         * After the removing "to" remains at index 11, which isn't a valid index for the vector
          */
         assertThrows(ArrayIndexOutOfBoundsException.class, subList::toArray);
     }
