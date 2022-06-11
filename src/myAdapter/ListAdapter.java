@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
  * @see myAdapter.HCollection
  * @author Andrea Stocco
  */
-public class ListAdapter implements HList, HCollection{
+public class ListAdapter implements HList{
 
     /**
      * Variable identifying the first valid index for a sublist. If the list isn't a sublist
@@ -494,7 +494,7 @@ public class ListAdapter implements HList, HCollection{
      * @see myAdapter.HListIterator
      * @author Andrea Stocco
      */
-    private class ListAdapterIterator implements HIterator, HListIterator{
+    private class ListAdapterIterator implements HListIterator{
         private int previous, next;
         private int lastCall; // 0: invalid, 1: next, -1: previous
 
