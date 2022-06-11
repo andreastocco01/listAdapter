@@ -1070,7 +1070,7 @@ public class ListAdapterTest
      * <strong>Design</strong>: on teamList are created two iterators (one in front of the list, one at the end).
      * The second half of the list is modified. Then a sublist is created and teams array elements are inserted to that one.
      * Obviously the structural changes also occur in the father list. When some elements are removed from the father list,
-     * the subList behaviour become undefined (because "to" index isn't correctly updated).
+     * the subList behaviour becomes wrong (because "to" index isn't correctly updated).
      * <br><br>
      * <strong>Preconditions</strong>: all the methods must work correctly.
      * <br><br>
