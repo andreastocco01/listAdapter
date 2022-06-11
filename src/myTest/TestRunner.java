@@ -31,10 +31,6 @@ public class TestRunner {
         System.out.println();
         res = JUnitCore.runClasses(ListAdapterTest.class);
         esitoTest(res);
-        /*res = JUnitCore.runClasses(ListTest.class);
-        esitoTest(res);
-        res = JUnitCore.runClasses(TestBasaglia.class);
-        esitoTest(res);*/
     }
 
     /**
