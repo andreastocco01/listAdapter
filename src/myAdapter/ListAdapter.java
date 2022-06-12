@@ -154,7 +154,7 @@ public class ListAdapter implements HList{
      *                    otherwise, a new array of the
      *                    same size is allocated for this purpose.
      * @throws NullPointerException if arrayTarget == null;
-     * @return a new array if arrayTarget.length() < size(). arrayTarget if all list's elements can be contained
+     * @return a new array if arrayTarget.length < size(). arrayTarget if all list's elements can be contained
      * in this array
      */
     @Override
