@@ -23,15 +23,20 @@ import static org.junit.Assert.assertEquals;
  * Every execution variable is never in an uninitialized state (i.e. teamList = null).
  * Before each test case, a new empty listAdapter must be instantiated. A new listAdapter, which contains the elements of the
  * array "teams", must be instantiated, together with a listIterator pointing the first element of that list.
+ * The parameters of the methods called inside the test cases are valid unless it is specified in the test case description.
  * <br><br>
  * A test case is correct if all the tests that verify the correct functioning give a positive result.
  * <br><br>
  * To execute each test case of this class, simply run TestRunner class.
  * <br><br>
  * Execution variable:
+ * <br>
  * HList teamList - main listAdapter on which all the methods are tested.
+ * <br>
  * HList emptyList - empty listAdapter which is used to test teamList. In the majority of the tests, the emptyList is filled with test values.
+ * <br>
  * HListIterator iter - listIterator attached to teamList.
+ * <br>
  * String [] teams - array which contains the elements for initializing teamList.
  *
  * @see myAdapter.ListAdapter
@@ -1062,6 +1067,7 @@ public class ListAdapterTest
      * modified.
      * <br><br>
      * <strong>Description</strong>: some elements are added with the iterator. An element is changed, another one is removed.
+     * An exception is expected when set() and get() are called with invalid arguments.
      * Another element is added then the iterator is moved backward and forward before removing another element.
      * <br><br>
      * <strong>Preconditions</strong>: all the methods must work correctly.
