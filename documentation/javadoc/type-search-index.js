@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"myAdapter","l":"HCollection"},{"p":"myAdapter","l":"HIterator"},{"p":"myAdapter","l":"HList"},{"p":"myAdapter","l":"HListIterator"},{"p":"myAdapter","l":"ListAdapter"},{"p":"myTest","l":"ListAdapterTest"},{"p":"myTest","l":"TestRunner"},{"p":"myAdapter","l":"Vector"}]
