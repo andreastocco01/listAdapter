@@ -194,7 +194,7 @@ public class ListAdapter implements HList{
      */
     @Override
     public boolean add(Object obj) {
-        add(to, obj);
+        add(size(), obj);
         return true;
     }
 
@@ -388,7 +388,7 @@ public class ListAdapter implements HList{
     @Override
     public Object set(int index, Object element) {
         if(index < 0 || index >= this.size()) throw new IndexOutOfBoundsException();
-        Object toReturn = get(index + from);
+        Object toReturn = get(index);
         list.setElementAt(element, index + from);
         return toReturn;
     }
@@ -415,7 +415,7 @@ public class ListAdapter implements HList{
     @Override
     public Object remove(int index) {
         if(index < 0 || index >= size()) throw new IndexOutOfBoundsException();
-        Object toRemove = list.elementAt(index + from);
+        Object toRemove = get(index);
         list.removeElementAt(index + from);
         refreshIndexes(-1);
         return toRemove;

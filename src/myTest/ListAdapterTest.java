@@ -56,8 +56,7 @@ public class ListAdapterTest
      * <strong>Preconditions</strong>: the constructors have to correctly initialize the execution variables.
      */
     @Before
-    public void setup()
-    {
+    public void setup() {
         teamList = new ListAdapter();
         emptyList = new ListAdapter();
         iter = teamList.listIterator();

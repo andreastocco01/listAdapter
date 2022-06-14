@@ -52,5 +52,6 @@ public class TestRunner {
                 System.out.println(fail.toString());
             }
         }
+        totalTests = 0;
     }
 }
