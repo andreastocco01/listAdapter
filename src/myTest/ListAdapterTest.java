@@ -1118,10 +1118,10 @@ public class ListAdapterTest
      * <br><br>
      * <strong>Preconditions</strong>: all the methods must work correctly.
      * <br><br>
-     * <strong>Postconditions</strong>: the lists must allow you to do almost everything with the elements.
+     * <strong>Postconditions</strong>: the methods must allow you to do all the operations described.
      * <br><br>
-     * <strong>Expected result</strong>: the list contains exactly the elements contained by
-     * the manually created Object arrays with the expected values.
+     * <strong>Expected result</strong>: the lists must contain the correct element in the correct position
+     * in every case.
      */
     // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
     @Test
@@ -1149,5 +1149,45 @@ public class ListAdapterTest
         // emptyList = {null, 31}
         assertEquals(emptyList.hashCode(), teamList.hashCode());
         assertNotEquals(emptyList, teamList);
+    }
+
+    /**
+     * <strong>Summary</strong>: test of the general behaviour of lists and iterators together.
+     * <br><br>
+     * <strong>Design</strong>: many functions of iterator and list are tested
+     * <br><br>
+     * <strong>Description</strong>: on teamList are created two iterators (one in front of the list, one at the end).
+     * The second half of the list is modified. Then a sublist is created and teams array elements are inserted to that one.
+     * Check if structural changes also occur in the father list. emptyList is filled with the elements of teamList which are inside
+     * the sublist. Check if the sublist and emptyList are equals and has the same hashCode.
+     * <br><br>
+     * <strong>Preconditions</strong>: all the methods must work correctly.
+     * <br><br>
+     * <strong>Postconditions</strong>: the methods must allow you to do all the operations described.
+     * <br><br>
+     * <strong>Expected result</strong>: the lists must contain the correct elements in every case.
+     */
+    // teamList = {"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax"}
+    @Test
+    public void testListAndIterator(){
+        HListIterator end = teamList.listIterator(teamList.size()); // now there are two iterators on the same list
+        while(iter.hasNext()){
+            // elements in the first half of the list are set in the last half of the list
+            end.previous();
+            end.set(iter.next());
+        }
+        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Real Madrid", "Liverpool", "Milan"}, teamList.toArray());
+        HList subList = teamList.subList(1, 5);
+        HListIterator subIterator = subList.listIterator();
+        for (String team : teams) {
+            subIterator.add(team); // teams elements are inserted inside the list
+        }
+        assertArrayEquals(new Object[]{"Milan", "Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax",
+                "Liverpool", "Real Madrid", "Real Madrid", "Liverpool", "Milan"}, teamList.toArray());
+        assertArrayEquals(new Object[]{"Milan", "Liverpool", "Real Madrid", "Manchester United", "Bayern Monaco", "Ajax",
+                "Liverpool", "Real Madrid", "Real Madrid", "Liverpool"}, subList.toArray());
+        emptyList.addAll(teamList.subList(1, teamList.size() - 1));
+        assertEquals(emptyList, subList);
+        assertEquals(emptyList.hashCode(), subList.hashCode());
     }
 }
